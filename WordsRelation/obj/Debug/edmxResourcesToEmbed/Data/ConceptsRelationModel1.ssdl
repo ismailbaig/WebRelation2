@@ -1,0 +1,124 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="ConceptsRelationDBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityType Name="ConceptOne">
+    <Key>
+      <PropertyRef Name="C1Id" />
+    </Key>
+    <Property Name="C1Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="ConceptOneName" Type="nvarchar" MaxLength="255" Nullable="false" />
+  </EntityType>
+  <EntityType Name="ConceptTwo">
+    <Key>
+      <PropertyRef Name="C2Id" />
+    </Key>
+    <Property Name="C2Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="ConceptTwoName" Type="nvarchar" MaxLength="255" Nullable="false" />
+  </EntityType>
+  <EntityType Name="MasterConceptRelation">
+    <Key>
+      <PropertyRef Name="CrID" />
+    </Key>
+    <Property Name="CrID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="TopicID" Type="nvarchar" MaxLength="255" />
+    <Property Name="TopicName" Type="nvarchar" MaxLength="255" />
+    <Property Name="ConceptOne" Type="nvarchar" MaxLength="255" />
+    <Property Name="ConceptTwo" Type="nvarchar" MaxLength="255" />
+    <Property Name="CoceptRelation" Type="nvarchar" MaxLength="255" />
+  </EntityType>
+  <EntityType Name="Relations">
+    <Key>
+      <PropertyRef Name="RelID" />
+    </Key>
+    <Property Name="RelID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="RelationName" Type="nvarchar" MaxLength="255" />
+  </EntityType>
+  <EntityType Name="SaveAllCR">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="fTopicId" Type="int" Nullable="false" />
+    <Property Name="fRId" Type="int" Nullable="false" />
+    <Property Name="fC1Id" Type="int" Nullable="false" />
+    <Property Name="fC2Id" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Topics">
+    <Key>
+      <PropertyRef Name="TopicID" />
+    </Key>
+    <Property Name="TopicID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="TopicsName" Type="nvarchar" MaxLength="255" />
+  </EntityType>
+  <Association Name="FK__SaveAllCR__fC1Id__4BAC3F29">
+    <End Role="ConceptOne" Type="Self.ConceptOne" Multiplicity="1" />
+    <End Role="SaveAllCR" Type="Self.SaveAllCR" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="ConceptOne">
+        <PropertyRef Name="C1Id" />
+      </Principal>
+      <Dependent Role="SaveAllCR">
+        <PropertyRef Name="fC1Id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__SaveAllCR__fC2Id__4CA06362">
+    <End Role="ConceptTwo" Type="Self.ConceptTwo" Multiplicity="1" />
+    <End Role="SaveAllCR" Type="Self.SaveAllCR" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="ConceptTwo">
+        <PropertyRef Name="C2Id" />
+      </Principal>
+      <Dependent Role="SaveAllCR">
+        <PropertyRef Name="fC2Id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__SaveAllCR__fRId__4AB81AF0">
+    <End Role="Relations" Type="Self.Relations" Multiplicity="1" />
+    <End Role="SaveAllCR" Type="Self.SaveAllCR" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Relations">
+        <PropertyRef Name="RelID" />
+      </Principal>
+      <Dependent Role="SaveAllCR">
+        <PropertyRef Name="fRId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__SaveAllCR__fTopi__49C3F6B7">
+    <End Role="Topics" Type="Self.Topics" Multiplicity="1" />
+    <End Role="SaveAllCR" Type="Self.SaveAllCR" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Topics">
+        <PropertyRef Name="TopicID" />
+      </Principal>
+      <Dependent Role="SaveAllCR">
+        <PropertyRef Name="fTopicId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="ConceptsRelationDBModelStoreContainer">
+    <EntitySet Name="ConceptOne" EntityType="Self.ConceptOne" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="ConceptTwo" EntityType="Self.ConceptTwo" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="MasterConceptRelation" EntityType="Self.MasterConceptRelation" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Relations" EntityType="Self.Relations" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="SaveAllCR" EntityType="Self.SaveAllCR" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Topics" EntityType="Self.Topics" Schema="dbo" store:Type="Tables" />
+    <AssociationSet Name="FK__SaveAllCR__fC1Id__4BAC3F29" Association="Self.FK__SaveAllCR__fC1Id__4BAC3F29">
+      <End Role="ConceptOne" EntitySet="ConceptOne" />
+      <End Role="SaveAllCR" EntitySet="SaveAllCR" />
+    </AssociationSet>
+    <AssociationSet Name="FK__SaveAllCR__fC2Id__4CA06362" Association="Self.FK__SaveAllCR__fC2Id__4CA06362">
+      <End Role="ConceptTwo" EntitySet="ConceptTwo" />
+      <End Role="SaveAllCR" EntitySet="SaveAllCR" />
+    </AssociationSet>
+    <AssociationSet Name="FK__SaveAllCR__fRId__4AB81AF0" Association="Self.FK__SaveAllCR__fRId__4AB81AF0">
+      <End Role="Relations" EntitySet="Relations" />
+      <End Role="SaveAllCR" EntitySet="SaveAllCR" />
+    </AssociationSet>
+    <AssociationSet Name="FK__SaveAllCR__fTopi__49C3F6B7" Association="Self.FK__SaveAllCR__fTopi__49C3F6B7">
+      <End Role="Topics" EntitySet="Topics" />
+      <End Role="SaveAllCR" EntitySet="SaveAllCR" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>
