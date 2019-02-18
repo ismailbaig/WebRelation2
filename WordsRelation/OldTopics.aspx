@@ -14,6 +14,7 @@
 <body>
     <form id="form1" runat="server">
         <div>
+            <asp:Label ID="Label1" runat="server" Text="Label"></asp:Label>
             <nav class="navbar navbar-custom navbar-fixed-top" role="navigation">
 		<div class="container-fluid">
 			<div class="navbar-header">
@@ -26,6 +27,7 @@
 			</div>
 		</div><!-- /.container-fluid -->
 	</nav>
+            
 
 
 
@@ -80,8 +82,11 @@
 				
 					<div class="panel-body">
 						<div class="col-md-8">
-							<form role="form">
-								
+						
+					
+                                
+
+
 			
 					 <!-- start project list -->
                <asp:GridView ID="grdvTopics" runat="server" AutoGenerateColumns="False" OnSelectedIndexChanged="grdvTopics_SelectedIndexChanged">
@@ -98,17 +103,6 @@
                   <ItemStyle ForeColor="#0066FF"></ItemStyle>
                 </asp:HyperLinkField>
 
-          <%--    <asp:ButtonField Text="View/Edit" HeaderText="View/Edit">
-                  <HeaderStyle BackColor="#3498DB" ForeColor="White" Height="30px" HorizontalAlign="Center" VerticalAlign="Middle" Width="150"></HeaderStyle>
-                  <ItemStyle ForeColor="#0066FF"></ItemStyle>
-              </asp:ButtonField>
-
-               <asp:ButtonField Text="Export" HeaderText="Export" >
-                  <HeaderStyle BackColor="#3498DB" ForeColor="White" Height="30px" HorizontalAlign="Center" VerticalAlign="Middle" Width="150"></HeaderStyle>
-                  <ItemStyle ForeColor="#0066FF"></ItemStyle>
-              </asp:ButtonField>--%>
-
-
             
             </Columns>
 
@@ -119,13 +113,13 @@
       </asp:GridView>
 						
 						
-
+                            
 
 
 
 
                     <!-- end project list -->
-                                	</form>
+                                	
 								</div>
 							
 						

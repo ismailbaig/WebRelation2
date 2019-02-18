@@ -23,13 +23,17 @@ namespace WordsRelation
 
         protected void Page_Load(object sender, EventArgs e)
         {
-            if (!IsPostBack)
-            {
-                //GetAllItems();
-            }
+            //if (!IsPostBack)
+            //{
+            //    //GetAllItems();
+            //}
+
+
+            lblTopicID.Text = Request.QueryString["TopicID"];
+            string id = lblTopicID.Text;
             using (var context = new ConceptsRelationDBEntities())
             {
-                grdvConceptRelation.DataSource = context.MasterConceptRelations.Where(c => c.TopicName == "Topic 2").ToList<MasterConceptRelation>();
+                grdvConceptRelation.DataSource = context.MasterConceptRelations.Where(c => c.TopicID == id).ToList<MasterConceptRelation>();
                 grdvConceptRelation.DataBind();
             }
         }
@@ -148,6 +152,36 @@ namespace WordsRelation
         }
 
         [WebMethod]
+        public static bool SaveTopic(string topic)
+        {
+            int count = 0;
+
+            try
+            {
+
+                using (ConceptsRelationDBEntities context = new ConceptsRelationDBEntities())
+                {
+                    context.Topics.Add(new Topic { TopicsName = topic });
+                    count = context.SaveChanges();
+                }
+
+                if (count > 0)
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+            catch(Exception ex)
+            {
+                return false;
+            }
+
+        }
+
+        [WebMethod]
         public static List<ConceptTwoEOModel> GetAllConceptTwo(string c2Val)
         {
             List<ConceptTwoEOModel> relEO = new List<ConceptTwoEOModel>();
@@ -205,7 +239,104 @@ namespace WordsRelation
 
             catch (Exception ex) { return false; }
         }
-        
+
+        [WebMethod]
+        public static bool SaveAllDetails(string topic, int rtVal, int c1Val, int c2Val)
+        {
+            int count = 0;
+            Topic topicDBEntity = new Topic();
+            try
+            {
+
+                using (var context = new ConceptsRelationDBEntities())
+                {
+                     topicDBEntity = context.Topics.Where(tp => tp.TopicsName == topic).FirstOrDefault();
+
+                }
+
+                using (ConceptsRelationDBEntities context = new ConceptsRelationDBEntities())
+                {
+                    context.SaveAllCRs.Add(
+                        new SaveAllCR
+                        {
+                            fTopicId = topicDBEntity.TopicID,
+                            fRId = rtVal,
+                            fC1Id = c1Val,
+                            fC2Id = c2Val
+                        });
+                    count = context.SaveChanges();
+                }
+
+                if (count > 0)
+                {
+                    using (var context = new ConceptsRelationDBEntities())
+                    {
+                        //Home1 hm1 = new Home1();
+                        //hm1.grdvConceptRelation.DataSource = context.MasterConceptRelations.Where(c => c.TopicName == "Topic 2").ToList<MasterConceptRelation>();
+                        //hm1.grdvConceptRelation.DataBind();
+                    }
+                    return true;
+
+
+                }
+                else
+                    return false;
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+        }
+
+        [WebMethod]
+        public static List<TopicDetailsEOModel> GetAllDetailsForTopic(string topic)
+        {
+            int count = 0;
+            List<SaveAllCR> saveAllCRList = new List<SaveAllCR>();
+            SaveAllCR saveAllCR = new SaveAllCR();
+
+            Relation relation = new Relation();
+            ConceptOne c1Details = new ConceptOne();
+            ConceptTwo c2Details = new ConceptTwo();
+            Topic topicDBEntity = new Topic();
+
+            List<TopicDetailsEOModel> topicDetailsEOList = new List<TopicDetailsEOModel>();
+
+            try
+            {
+
+                using (var context = new ConceptsRelationDBEntities())
+                {
+                    saveAllCRList = context.SaveAllCRs.Where(tp => tp.Topic.TopicsName == topic).ToList< SaveAllCR>();
+
+                    foreach(SaveAllCR cr in saveAllCRList)
+                    {
+                        topicDetailsEOList.Add(new TopicDetailsEOModel
+                        {
+                            TopicDetailsId = cr.Id,
+                            ConceptOne = cr.ConceptOne.ConceptOneName,
+                            ConceptTwo = cr.ConceptTwo.ConceptTwoName,
+                            RelationType = cr.Relation.RelationName
+                        });
+                    }
+                }
+
+                return topicDetailsEOList;
+
+            }
+            catch (Exception ex)
+            {
+                return null;
+            }
+        }
+
+
+        //private void LoadGrid()
+        //{
+        //    grdvConceptRelation.DataSource = context.MasterConceptRelations.Where(c => c.TopicName == "Topic 2").ToList<MasterConceptRelation>();
+        //    grdvConceptRelation.DataBind();
+        //}
+
         protected void SaveConceptsRelation_Click(object sender, EventArgs e)
         {
 

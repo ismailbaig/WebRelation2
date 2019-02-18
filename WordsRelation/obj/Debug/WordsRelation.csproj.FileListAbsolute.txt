@@ -117,6 +117,8 @@ D:\ismail\Applications\WordsRelation\WordsRelation\bin\DocumentFormat.OpenXml.dl
 D:\ismail\Applications\WordsRelation\WordsRelation\bin\OpenXmlPowerTools.dll
 D:\ismail\Applications\WordsRelation\WordsRelation\bin\DocumentFormat.OpenXml.xml
 D:\ismail\Applications\WordsRelation\WordsRelation\obj\Debug\WordsRelation.csprojAssemblyReference.cache
+C:\Users\Suhail\Pictures\Hasan\New folder (2)\WordRelation-master\WordsRelation\obj\Debug\WordsRelation.csprojAssemblyReference.cache
+C:\Users\Suhail\Pictures\Hasan\New folder (2)\WordRelation-master\WordsRelation\obj\Debug\WordsRelation.csproj.CoreCompileInputs.cache
 C:\Users\Suhail\Pictures\Hasan\New folder (2)\WordRelation-master\WordsRelation\bin\WordsRelation.dll.config
 C:\Users\Suhail\Pictures\Hasan\New folder (2)\WordRelation-master\WordsRelation\bin\WordsRelation.dll
 C:\Users\Suhail\Pictures\Hasan\New folder (2)\WordRelation-master\WordsRelation\bin\WordsRelation.pdb
@@ -175,8 +177,6 @@ C:\Users\Suhail\Pictures\Hasan\New folder (2)\WordRelation-master\WordsRelation\
 C:\Users\Suhail\Pictures\Hasan\New folder (2)\WordRelation-master\WordsRelation\bin\EntityFramework.xml
 C:\Users\Suhail\Pictures\Hasan\New folder (2)\WordRelation-master\WordsRelation\bin\EntityFramework.SqlServer.xml
 C:\Users\Suhail\Pictures\Hasan\New folder (2)\WordRelation-master\WordsRelation\bin\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.xml
-C:\Users\Suhail\Pictures\Hasan\New folder (2)\WordRelation-master\WordsRelation\obj\Debug\WordsRelation.csproj.CoreCompileInputs.cache
 C:\Users\Suhail\Pictures\Hasan\New folder (2)\WordRelation-master\WordsRelation\obj\Debug\WordsRelation.csproj.CopyComplete
 C:\Users\Suhail\Pictures\Hasan\New folder (2)\WordRelation-master\WordsRelation\obj\Debug\WordsRelation.dll
 C:\Users\Suhail\Pictures\Hasan\New folder (2)\WordRelation-master\WordsRelation\obj\Debug\WordsRelation.pdb
-C:\Users\Suhail\Pictures\Hasan\New folder (2)\WordRelation-master\WordsRelation\obj\Debug\WordsRelation.csprojAssemblyReference.cache

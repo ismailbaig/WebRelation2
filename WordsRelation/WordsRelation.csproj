@@ -83,6 +83,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="AllOldTopics.aspx" />
     <Content Include="charts.html" />
     <Content Include="ConceptSearch.aspx" />
     <Content Include="ConceptsRelation.sql" />
@@ -118,6 +119,8 @@
     <Content Include="js\WR-Relation.js" />
     <Content Include="js\WR-ConceptOne.js" />
     <Content Include="js\WR-SaveAll.js" />
+    <Content Include="js\WR-TopicDetails.js" />
+    <Content Include="js\WR-Topics.js" />
     <Content Include="NewTopics.aspx" />
     <Content Include="index.html" />
     <Content Include="jQuery\select2.min.js" />
@@ -148,6 +151,13 @@
     <Content Include="widgets.html" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AllOldTopics.aspx.cs">
+      <DependentUpon>AllOldTopics.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="AllOldTopics.aspx.designer.cs">
+      <DependentUpon>AllOldTopics.aspx</DependentUpon>
+    </Compile>
     <Compile Include="ConceptSearch.aspx.cs">
       <DependentUpon>ConceptSearch.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>

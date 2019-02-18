@@ -21,12 +21,14 @@
      <script src='js/WR-ConceptOne.js' type='text/javascript'></script>
     <script src='js/WR-ConceptTwo.js' type='text/javascript'></script>
     <script src='js/WR-SaveAll.js' type='text/javascript'></script>
+    <script src='js/WR-Topics.js' type='text/javascript'></script>
+    <script src='js/WR-TopicDetails.js' type='text/javascript'></script>
 </head>
 <body>
     <form id="form1" runat="server">
         <div>
 
-
+            <asp:Label ID="lblTopicID"  runat="server" Text="Label"></asp:Label>
 
              <nav class="navbar navbar-custom navbar-fixed-top" role="navigation">
 		<div class="container-fluid">
@@ -96,7 +98,10 @@
 			<div class="form-group">
 									<label>New Topic Name</label>
 								
-                                <asp:TextBox ID="TextBox1" class="form-control" runat="server"></asp:TextBox>
+                                <%--<asp:TextBox ID="TextBox1" class="form-control" runat="server"></asp:TextBox>--%>
+                                <input type="text" id="topic" class="form-control" /><br />
+                                <input  type='button' value='Save Topic' id='savetopic' class="btn btn-primary">
+                                <input  type='button' value='Get Topic Details' id='getTopicDetails' class="btn btn-primary">
 								</div>
 								<div class="form-group">
 									<label>File input</label>
@@ -203,6 +208,23 @@
         </div></div></div></div></div></div>           
         </div>
     </form>
+    <div class="row">
+	 <div class="col-lg-12">
+	  <div class="panel panel-default">
+	   <div class="panel-body">
+		<div class="col-md-8">
+		 <form role="form">
+          <div class="form-group">
+            <div class="table table-bordered table-striped" id="topicDetailsTable">
+             <tr>
+                 <th style="visibility: hidden">topicId</th>
+                 <th>Concept One</th>
+                 <th>Concept Two</th>
+                 <th>Relation Type</th>
+                 <th>Action</th>
+             </tr>
+            </div>
+          </div></form></div></div></div></div></div>
 </body>
 </html>
 <!-- Script -->
@@ -214,5 +236,26 @@
         $('#saveAll').click(function () {
             saveAllWR();
         });
+
+        $('#savetopic').click(function () {
+            saveTopic();
+        });
+
+        $('#getTopicDetails').click(function () {
+            topicName = $('#topic').val();
+            if (topicName !== null && topicName !== '') {
+                getAllDetailsForTopic(topicName);
+            } else {
+                alert('Topic field cannot be empty!!');
+            }
+            
+        });
+
+        $('#EdittopicDettsId').click(function () {
+            alert('test');
+        });
+        
+        
+        
     });
 </script>
