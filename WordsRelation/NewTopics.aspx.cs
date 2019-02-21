@@ -291,6 +291,8 @@ namespace WordsRelation
         [WebMethod]
         public static List<TopicDetailsEOModel> GetAllDetailsForTopic(string topic)
         {
+            
+
             int count = 0;
             List<SaveAllCR> saveAllCRList = new List<SaveAllCR>();
             SaveAllCR saveAllCR = new SaveAllCR();
@@ -316,7 +318,8 @@ namespace WordsRelation
                             TopicDetailsId = cr.Id,
                             ConceptOne = cr.ConceptOne.ConceptOneName,
                             ConceptTwo = cr.ConceptTwo.ConceptTwoName,
-                            RelationType = cr.Relation.RelationName
+                            RelationType = cr.Relation.RelationName,
+                            TopicName = cr.Topic.TopicsName
                         });
                     }
                 }

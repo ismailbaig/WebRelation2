@@ -5,6 +5,25 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
     <title></title>
+
+
+    <style>
+table, td, th {
+  border: 1px solid black;
+}
+
+table {
+  border-collapse: collapse;
+  width: 100%;
+}
+
+th {
+  text-align: left;
+}
+</style>
+
+
+
     <link href="css/bootstrap.min.css" rel="stylesheet">
 	<link href="css/font-awesome.min.css" rel="stylesheet">
 	<link href="css/datepicker3.css" rel="stylesheet">
@@ -205,16 +224,28 @@
 							
 <%--        <asp:Button class="btn btn-primary" ID="SaveConceptsRelation" runat="server" Text="Save" OnClick="SaveConceptsRelation_Click"/>--%>
             <input  type='button' value='SaveAll' id='saveAll' class="btn btn-primary">
-        </div></div></div></div></div></div>           
+        </div></div></div></div></div>
+
+
+                      <table id="topicDetailsTable">
+               
+              </table>
+    </div>           
         </div>
     </form>
-    <div class="row">
+
+<%--    <div class="row">
 	 <div class="col-lg-12">
 	  <div class="panel panel-default">
 	   <div class="panel-body">
 		<div class="col-md-8">
 		 <form role="form">
           <div class="form-group">
+
+
+
+
+
             <div class="table table-bordered table-striped" id="topicDetailsTable">
              <tr>
                  <th style="visibility: hidden">topicId</th>
@@ -224,7 +255,7 @@
                  <th>Action</th>
              </tr>
             </div>
-          </div></form></div></div></div></div></div>
+          </div></form></div></div></div></div></div>--%>
 </body>
 </html>
 <!-- Script -->

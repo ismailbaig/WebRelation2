@@ -12,33 +12,18 @@
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
              <!-- start project list -->
                <asp:GridView ID="grdvTopics" runat="server" AutoGenerateColumns="False" >
             <Columns>
-              <asp:BoundField DataField="TopicID" HeaderText="Id" Visible="False"></asp:BoundField>
+              <asp:BoundField DataField="TopicDetailsId" HeaderText="Id" Visible="True"></asp:BoundField>
+                <asp:BoundField DataField="TopicName" HeaderText="TopicName" Visible="True"></asp:BoundField>
               
-              <asp:BoundField DataField="TopicName" HeaderText="Topics">
+         <%--     <asp:BoundField DataField="TopicName" HeaderText="Topics">
                   <HeaderStyle BackColor="#3498DB" ForeColor="White" Height="30px" HorizontalAlign="Center" VerticalAlign="Middle" Width="150"></HeaderStyle>
                   
-              </asp:BoundField>
+              </asp:BoundField>--%>
           
-                 <asp:HyperLinkField Text="View/Edit" HeaderText="View/Edit" DataNavigateUrlFields="TopicID" DataNavigateUrlFormatString="NewTopics.aspx?TopicID={0}">
+                 <asp:HyperLinkField Text="View/Edit" HeaderText="View/Edit" DataNavigateUrlFields="TopicDetailsId" DataNavigateUrlFormatString="NewTopics.aspx?TopicDetailsId={0}">
                          <HeaderStyle BackColor="#3498DB" ForeColor="White" Height="30px" HorizontalAlign="Center" VerticalAlign="Middle" Width="150"></HeaderStyle>
                   <ItemStyle ForeColor="#0066FF"></ItemStyle>
                 </asp:HyperLinkField>

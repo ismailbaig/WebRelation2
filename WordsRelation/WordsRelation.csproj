@@ -121,6 +121,7 @@
     <Content Include="js\WR-SaveAll.js" />
     <Content Include="js\WR-TopicDetails.js" />
     <Content Include="js\WR-Topics.js" />
+    <Content Include="Neo4j.aspx" />
     <Content Include="NewTopics.aspx" />
     <Content Include="index.html" />
     <Content Include="jQuery\select2.min.js" />
@@ -216,6 +217,13 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\WREOModel.cs" />
+    <Compile Include="Neo4j.aspx.cs">
+      <DependentUpon>Neo4j.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Neo4j.aspx.designer.cs">
+      <DependentUpon>Neo4j.aspx</DependentUpon>
+    </Compile>
     <Compile Include="NewTopics.aspx.cs">
       <DependentUpon>NewTopics.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>

@@ -32,5 +32,6 @@ namespace WordsRelation.Models
         public string RelationType { get; set; }
         public string ConceptOne { get; set; }
         public string ConceptTwo { get; set; }
+        public string TopicName { get; set; }
     }
 }

@@ -24,6 +24,9 @@ function getAllDetailsForTopic(topicName) {
                 topic_data += "<td><input  type='button' value='Edit Topic Details' id='EdittopicDettsId' class='btn btn-primary'></td>";
                 topic_data += '</tr>';
             });
+            $("#topicDetailsTable tr").remove();
+            //$('#topicDetailsTable').Clear();
+            $('#topicDetailsTable').append('<tr><th style="visibility: hidden">topicId</th><th>Concept One</th><th>Concept Two</th><th>Relation Type</th><th>Action</th></tr>');
             $('#topicDetailsTable').append(topic_data);
         }
     });
