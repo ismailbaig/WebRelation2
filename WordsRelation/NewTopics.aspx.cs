@@ -473,14 +473,14 @@ namespace WordsRelation
                     var imageDirectoryRelativeName =
                         fiHtml.Name.Substring(0, fiHtml.Name.Length - fiHtml.Extension.Length) + "_files";
                     int imageCounter = 0;
-                    var pageTitle = (string)wDoc
-                                    .CoreFilePropertiesPart
-                                    .GetXDocument()
-                                    .Descendants(DC.title)
-                                    .FirstOrDefault();
+                    //var pageTitle = (string)wDoc
+                    //                .CoreFilePropertiesPart
+                    //                .GetXDocument()
+                    //                .Descendants(DC.title)
+                    //                .FirstOrDefault();
                     HtmlConverterSettings settings = new HtmlConverterSettings()
                     {
-                        PageTitle = pageTitle,
+                        PageTitle = "File",
                         FabricateCssClasses = true,
                         CssClassPrefix = "pt-",
                         RestrictToSupportedLanguages = false,

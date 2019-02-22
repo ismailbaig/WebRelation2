@@ -108,6 +108,7 @@
       <DependentUpon>ConceptsRelationModel1.edmx</DependentUpon>
       <LastGenOutput>ConceptsRelationModel1.cs</LastGenOutput>
     </Content>
+    <Content Include="DBScript\script.sql" />
     <Content Include="DefaultPage.aspx" />
     <Content Include="DefaultPage1.aspx" />
     <Content Include="Dropdown_page.html" />

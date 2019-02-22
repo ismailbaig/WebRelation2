@@ -282,9 +282,10 @@ th {
             
         });
 
-        $('#EdittopicDettsId').click(function () {
-            alert('test');
-        });
+        //$('#EdittopicDettsId').click(function () {
+        //    alert('test');
+        //});
+
         
         
         

@@ -21,7 +21,8 @@ function getAllDetailsForTopic(topicName) {
                 topic_data += '<td>' + val.RelationType + '</td>';
                 topic_data += '<td>' + val.ConceptOne + '</td>';
                 topic_data += '<td>' + val.ConceptTwo + '</td>';
-                topic_data += "<td><input  type='button' value='Edit Topic Details' id='EdittopicDettsId' class='btn btn-primary'></td>";
+                topic_data += "<td><input  type='button' value='Edit Topic Details' id='EdittopicDettsId" + val.TopicDetailsId +  
+                                "'class='btn btn - primary' onclick = editTopic(event)></td>";
                 topic_data += '</tr>';
             });
             $("#topicDetailsTable tr").remove();
@@ -31,4 +32,8 @@ function getAllDetailsForTopic(topicName) {
         }
     });
 
+}
+
+function editTopic(val) {
+    alert(val);
 }
