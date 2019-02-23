@@ -27,6 +27,16 @@ function saveAllWR() {
             success: function (response) {
                 if (response.d) {
                     alert('Saved Scuccesfully!!');
+                    //call the search again from Database, kind of refresh
+                    topicName = $('#topic').val();
+                    c1 = $('#selConceptOne').val();
+                    c2 = $('#selConceptTwo').val();
+                    rt = $('#selRelation').val();
+                    if (topicName !== null && topicName !== '') {
+                        searchDetailsForTopic(topicName, c1, c2, rt);
+                    } else {
+                        alert('Topic field cannot be empty!!');
+                    }
                 } else {
                     alert('Unable to Save, contact administrator!!');
                 }

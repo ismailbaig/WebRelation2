@@ -34,8 +34,8 @@ namespace WordsRelation
             string id = lblTopicID.Text;
             using (var context = new ConceptsRelationDBEntities())
             {
-                grdvConceptRelation.DataSource = context.MasterConceptRelations.Where(c => c.TopicID == id).ToList<MasterConceptRelation>();
-                grdvConceptRelation.DataBind();
+                //grdvConceptRelation.DataSource = context.MasterConceptRelations.Where(c => c.TopicID == id).ToList<MasterConceptRelation>();
+                //grdvConceptRelation.DataBind();
             }
         }
 
@@ -89,12 +89,19 @@ namespace WordsRelation
             {
                 var searchCriteria = new
                 {
+                    topicName = topic,
                     concept1 = c1,
                     concept2 = c2,
                     relationType = rt
                 };
 
                 var predicate = PredicateBuilder.New<SaveAllCR>();
+
+                if (!string.IsNullOrWhiteSpace(searchCriteria.topicName.ToString()))
+                {
+                    predicate = predicate.And(p => p.Topic.TopicsName.Contains(searchCriteria.topicName));
+                }
+
                 //if (!string.IsNullOrWhiteSpace(searchCriteria.concept1.ToString()))
                 if (searchCriteria.concept1.ToString() != "0")
                 {
@@ -200,7 +207,38 @@ namespace WordsRelation
             
         }
 
-        private static bool SaveNewC1ToDB(string c1NewVal) {
+        [WebMethod]
+        public static bool DeleteTopic(int topicId)
+        {
+            int count = 0;
+            try
+            {
+                using (var context = new ConceptsRelationDBEntities())
+                {
+                    List<SaveAllCR> _allCRsForFilter = context.SaveAllCRs.Where(tp => tp.Id == topicId).ToList<SaveAllCR>();
+                    foreach (SaveAllCR cr in _allCRsForFilter)
+                    {
+                        context.SaveAllCRs.Remove(cr);
+                    }
+                    count = context.SaveChanges();
+                }
+
+                if (count > 0)
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+            catch(Exception ex)
+            {
+                return false;
+            }
+        }
+
+            private static bool SaveNewC1ToDB(string c1NewVal) {
 
             int count = 0;
 
