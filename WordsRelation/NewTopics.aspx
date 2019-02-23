@@ -223,7 +223,9 @@ th {
         </div>
 							
 <%--        <asp:Button class="btn btn-primary" ID="SaveConceptsRelation" runat="server" Text="Save" OnClick="SaveConceptsRelation_Click"/>--%>
+
             <input  type='button' value='SaveAll' id='saveAll' class="btn btn-primary">
+            <input  type='button' value='Search' id='searchTopicDetails' class="btn btn-primary">
         </div></div></div></div></div>
 
 
@@ -274,6 +276,7 @@ th {
 
         $('#getTopicDetails').click(function () {
             topicName = $('#topic').val();
+            
             if (topicName !== null && topicName !== '') {
                 getAllDetailsForTopic(topicName);
             } else {
@@ -281,6 +284,20 @@ th {
             }
             
         });
+
+        $('#searchTopicDetails').click(function () {
+            topicName = $('#topic').val();
+            c1 = $('#selConceptOne').val();
+            c2 = $('#selConceptTwo').val();
+            rt = $('#selRelation').val();
+            if (topicName !== null && topicName !== '') {
+                searchDetailsForTopic(topicName, c1, c2, rt);
+            } else {
+                alert('Topic field cannot be empty!!');
+            }
+            
+        });
+
 
         //$('#EdittopicDettsId').click(function () {
         //    alert('test');

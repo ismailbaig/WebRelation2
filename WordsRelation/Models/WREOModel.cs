@@ -34,4 +34,12 @@ namespace WordsRelation.Models
         public string ConceptTwo { get; set; }
         public string TopicName { get; set; }
     }
+   
+
+    public class CRType
+    {
+        public string relationType { get; set; }
+        public string concept1 { get; set; }
+        public string concept2 { get; set; }
+    }
 }

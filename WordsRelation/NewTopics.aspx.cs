@@ -1,4 +1,5 @@
 ﻿using DocumentFormat.OpenXml.Packaging;
+using LinqKit;
 using OpenXmlPowerTools;
 using System;
 using System.Collections.Generic;
@@ -63,6 +64,79 @@ namespace WordsRelation
             if (SaveNewRTToDB(rtNew)) {
                 return GetAllRelations(rtNew);
             } else  {
+                return null;
+            }
+        }
+
+        [WebMethod]
+        public static List<TopicDetailsEOModel> Search(string topic, int c1, int c2, int rt)
+        //public static List<TopicDetailsEOModel> Search(string topic, string c1, string c2, string rt)
+        {
+
+
+            int count = 0;
+            List<SaveAllCR> saveAllCRList = new List<SaveAllCR>();
+            SaveAllCR saveAllCR = new SaveAllCR();
+
+            Relation relation = new Relation();
+            ConceptOne c1Details = new ConceptOne();
+            ConceptTwo c2Details = new ConceptTwo();
+            Topic topicDBEntity = new Topic();
+
+            List<TopicDetailsEOModel> topicDetailsEOList = new List<TopicDetailsEOModel>();
+
+            try
+            {
+                var searchCriteria = new
+                {
+                    concept1 = c1,
+                    concept2 = c2,
+                    relationType = rt
+                };
+
+                var predicate = PredicateBuilder.New<SaveAllCR>();
+                //if (!string.IsNullOrWhiteSpace(searchCriteria.concept1.ToString()))
+                if (searchCriteria.concept1.ToString() != "0")
+                {
+                    //predicate = predicate.And(p => p.ConceptOne.ConceptOneName.Contains(searchCriteria.concept1.ToString()));
+                    predicate = predicate.And(p => p.ConceptOne.C1Id.ToString().Contains(searchCriteria.concept1.ToString()));
+                }
+                //if (!string.IsNullOrWhiteSpace(searchCriteria.concept2.ToString()))
+                if (searchCriteria.concept2.ToString() != "0")
+                {
+                    predicate = predicate.And(p => p.ConceptTwo.C2Id.ToString().Contains(searchCriteria.concept2.ToString()));
+                }
+                //if (!string.IsNullOrWhiteSpace(searchCriteria.relationType.ToString()))
+                if(searchCriteria.relationType.ToString() != "0")
+                {
+                    predicate = predicate.And(p => p.Relation.RelID.ToString().Contains(searchCriteria.relationType.ToString()));
+                }
+                using (var context = new ConceptsRelationDBEntities())
+                {
+                    saveAllCRList = context.SaveAllCRs.
+                        Where( predicate.Compile())
+                        //Where(tp => tp.Topic.TopicsName == topic)
+                        .ToList<SaveAllCR>();
+
+                    foreach (SaveAllCR cr in saveAllCRList)
+                    {
+
+                        topicDetailsEOList.Add(new TopicDetailsEOModel
+                        {
+                            TopicDetailsId = cr.Id,
+                            ConceptOne = cr.ConceptOne.ConceptOneName,
+                            ConceptTwo = cr.ConceptTwo.ConceptTwoName,
+                            RelationType = cr.Relation.RelationName,
+                            TopicName = cr.Topic.TopicsName
+                        });
+                    }
+                }
+
+                return topicDetailsEOList;
+
+            }
+            catch (Exception ex)
+            {
                 return null;
             }
         }
