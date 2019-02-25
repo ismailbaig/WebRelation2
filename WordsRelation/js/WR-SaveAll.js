@@ -1,6 +1,6 @@
 ﻿
 //Save all WRs
-function saveAllWR() {
+function saveAllWR(isEdit, editTopicId) {
 
     var topic = $('#topic').val();
     var relTypeVal = $('#selRelation').val();
@@ -12,7 +12,7 @@ function saveAllWR() {
         && c1Val !== null && c1Val !== ''
         && c2Val !== null && c2Val !== '') {
 
-        var request = { topic: topic, rtVal: relTypeVal, c1Val: c1Val, c2Val: c2Val };
+        var request = { topic: topic, rtVal: relTypeVal, c1Val: c1Val, c2Val: c2Val, isEdit: isEdit, editTopicId: editTopicId };
 
         var strRequest = JSON.stringify(request);
 
@@ -33,7 +33,11 @@ function saveAllWR() {
                     c2 = $('#selConceptTwo').val();
                     rt = $('#selRelation').val();
                     if (topicName !== null && topicName !== '') {
-                        searchDetailsForTopic(topicName, c1, c2, rt);
+                        if (!isEdit) {
+                            searchDetailsForTopic(topicName, c1, c2, rt);
+                        } else {
+                            searchDetailsForTopic(topicName, null, null, null);
+                        }
                     } else {
                         alert('Topic field cannot be empty!!');
                     }

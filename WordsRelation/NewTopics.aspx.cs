@@ -202,9 +202,7 @@ namespace WordsRelation
             {
                 return GetAllConceptOne(null);
             }
-
             else { return null; }
-            
         }
 
         [WebMethod]
@@ -353,7 +351,7 @@ namespace WordsRelation
         }
 
         [WebMethod]
-        public static bool SaveAllDetails(string topic, int rtVal, int c1Val, int c2Val)
+        public static bool SaveAllDetails(string topic, int rtVal, int c1Val, int c2Val, bool isEdit, int editTopicId)
         {
             int count = 0;
             Topic topicDBEntity = new Topic();
@@ -362,20 +360,36 @@ namespace WordsRelation
 
                 using (var context = new ConceptsRelationDBEntities())
                 {
-                     topicDBEntity = context.Topics.Where(tp => tp.TopicsName == topic).FirstOrDefault();
+                    topicDBEntity = context.Topics.Where(tp => tp.TopicsName == topic).FirstOrDefault();
 
-                }
-
-                using (ConceptsRelationDBEntities context = new ConceptsRelationDBEntities())
-                {
-                    context.SaveAllCRs.Add(
-                        new SaveAllCR
+                    if (!isEdit && editTopicId == 0)
+                    {
+                        //Save new record
+                        context.SaveAllCRs.Add(
+                            new SaveAllCR
+                            {
+                                fTopicId = topicDBEntity.TopicID,
+                                fRId = rtVal,
+                                fC1Id = c1Val,
+                                fC2Id = c2Val
+                            });
+                    }
+                    else
+                    {
+                        // Update Existing record
+                        //var result = context.SaveAllCRs.SingleOrDefault(tp => tp.Topic.TopicsName == topic &&
+                        //                                                    tp.fC1Id == c1Val &&
+                        //                                                    tp.fC1Id == c2Val &&
+                        //                                                    tp.fRId == rtVal
+                        //                                                    );
+                        var result = context.SaveAllCRs.SingleOrDefault(tp => tp.Id == editTopicId);
+                        if (result != null)
                         {
-                            fTopicId = topicDBEntity.TopicID,
-                            fRId = rtVal,
-                            fC1Id = c1Val,
-                            fC2Id = c2Val
-                        });
+                            result.fC1Id = c1Val;
+                            result.fC2Id = c2Val;
+                            result.fRId = rtVal;
+                        }
+                    }
                     count = context.SaveChanges();
                 }
 

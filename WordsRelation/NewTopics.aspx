@@ -12,6 +12,10 @@ table, td, th {
   border: 1px solid black;
 }
 
+.nr{
+    background-color: lightgreen;
+}
+
 table {
   border-collapse: collapse;
   width: 100%;
@@ -19,6 +23,14 @@ table {
 
 th {
   text-align: left;
+}
+
+.btnHide{
+    visibility: hidden;
+}
+
+.btnShow{
+    visibility : visible;
 }
 </style>
 
@@ -212,52 +224,18 @@ th {
         <option value="NEW">Add new type</option>
         
     </select>
-
-    
-
     <br />
-    <div id='result'></div>
-
-
-									
+    <div id='result'></div>					
         </div>
-							
-<%--        <asp:Button class="btn btn-primary" ID="SaveConceptsRelation" runat="server" Text="Save" OnClick="SaveConceptsRelation_Click"/>--%>
-
-            <input  type='button' value='SaveAll' id='saveAll' class="btn btn-primary">
+            <input  type='button' value='SaveAll' id='saveAll' class="btn btn-primary btnShow">
             <input  type='button' value='Search' id='searchTopicDetails' class="btn btn-primary">
+            <input  type='button' value='Update' id='updateTopicDetails' 
+                class="btn btn-primary btnHide">
+            <input  type='button' value='Reset' id='btn-reset' 
+                class="btn btn-primary">
         </div></div></div></div></div>
-
-
-                      <table id="topicDetailsTable">
-               
-              </table>
-    </div>           
-        </div>
-    </form>
-
-<%--    <div class="row">
-	 <div class="col-lg-12">
-	  <div class="panel panel-default">
-	   <div class="panel-body">
-		<div class="col-md-8">
-		 <form role="form">
-          <div class="form-group">
-
-
-
-
-
-            <div class="table table-bordered table-striped" id="topicDetailsTable">
-             <tr>
-                 <th style="visibility: hidden">topicId</th>
-                 <th>Concept One</th>
-                 <th>Concept Two</th>
-                 <th>Relation Type</th>
-                 <th>Action</th>
-             </tr>
-            </div>
-          </div></form></div></div></div></div></div>--%>
+    <table id="topicDetailsTable"></table>
+    </div></div></form>
 </body>
 </html>
 <!-- Script -->
@@ -267,7 +245,7 @@ th {
         //with self executing functions.
 
         $('#saveAll').click(function () {
-            saveAllWR();
+            saveAllWR(false, '0');
         });
 
         $('#savetopic').click(function () {
@@ -296,6 +274,16 @@ th {
                 alert('Topic field cannot be empty!!');
             }
             
+        });
+
+        //Reset Select 
+        $('#btn-reset').click(function () {
+            resetTopicDetails();
+        });
+
+        //update CR
+        $('#updateTopicDetails').click(function () {
+            updateCR();
         });
 
 

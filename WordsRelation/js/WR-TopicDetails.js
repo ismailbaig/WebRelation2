@@ -17,12 +17,12 @@ function getAllDetailsForTopic(topicName) {
             var topic_data = '';
             $.each(response.d, function (key, val) {
                 topic_data += '<tr>';
-                topic_data += '<td style="visibility: hidden">' + val.TopicDetailsId + '</td>';
-                topic_data += '<td class="nr">' + val.ConceptOne + '</td>';
-                topic_data += '<td>' + val.ConceptTwo + '</td>';
-                topic_data += '<td>' + val.RelationType + '</td>';
+                topic_data += "<td  id='td_topidId' style='visibility: hidden'>" + val.TopicDetailsId + "</td>";
+                topic_data += "<td  id='td_c1_" + val.TopicDetailsId + "'>" + val.ConceptOne + "</td>";
+                topic_data += "<td  id='td_c2_" + val.TopicDetailsId + "'>" + val.ConceptTwo + '</td>';
+                topic_data += "<td  id='td_rt_" + val.TopicDetailsId + "'>" + val.RelationType + '</td>';
                 topic_data += "<td><input  type='button' value='Edit Topic Details' id='EdittopicDettsId" + val.TopicDetailsId +  
-                    "'class='btn btn - primary' onclick = editTopic(this)></td>";
+                    "'class='btn btn - primary' onclick = editTopic(event)></td>";
                 topic_data += "<td><input  type='button' value='Delete' id='deletetopicDetsId" + val.TopicDetailsId +
                     "'class='btn btn - primary' onclick = Delete(event)></td>";
                 topic_data += '</tr>';
@@ -36,7 +36,7 @@ function getAllDetailsForTopic(topicName) {
 
 }
 
-function searchDetailsForTopic(topicName, c1, c2, rt) {
+function searchDetailsForTopic(topieditTopcidcName, c1, c2, rt) {
 
     //Retrieve Relations OnLoad Page
     var request = {
@@ -56,9 +56,9 @@ function searchDetailsForTopic(topicName, c1, c2, rt) {
             $.each(response.d, function (key, val) {
                 topic_data += '<tr>';
                 topic_data += '<td style="visibility: hidden">' + val.TopicDetailsId + '</td>';
-                topic_data += '<td>' + val.ConceptOne + '</td>';
-                topic_data += '<td>' + val.ConceptTwo + '</td>';
-                topic_data += '<td>' + val.RelationType + '</td>';
+                topic_data += "<td  id='td_c1_" + val.TopicDetailsId + "'>" + val.ConceptOne + "</td>";
+                topic_data += "<td  id='td_c2_" + val.TopicDetailsId + "'>" + val.ConceptTwo + '</td>';
+                topic_data += "<td  id='td_rt_" + val.TopicDetailsId + "'>" + val.RelationType + '</td>';
                 //topic_data += '<td>' + val.TopicName + '</td>';
                 topic_data += "<td><input  type='button' value='Edit Topic Details' id='EdittopicDettsId" + val.TopicDetailsId +
                     "'class='btn btn - primary' onclick = editTopic(this)></td>";
@@ -76,14 +76,75 @@ function searchDetailsForTopic(topicName, c1, c2, rt) {
 }
 
 function editTopic(val) {
-    //console.log(val.target.id.replace('EdittopicDettsId', ''));
+    editTopcid = null;
+    editTopcid = val.target.id.replace('EdittopicDettsId', '');
+
     //var $item = $(this).closest("tr")   // Finds the closest row <tr> 
     //    .text();         // Retrieves the text within <td>
     //console.log($item);
-    var $row = $(this).closest("tr");    // Find the row
-    var $text = $row.find(".nr").text(); // Find the text
-    console.log($text);
+    //var $row = $(this).closest("tr");    // Find the row
+    //var $text = $row.find(".nr").val(); // Find the text
 
+    //let tr = $(this).closest('tr');
+    //let a = tr.find('td:eq(1)').val();
+    //let b = tr.find('td:eq(2)').val(); 
+    //alert('Table 1: ' + a + ' ' + b); 
+
+    $c1 = $('#td_c1_' + editTopcid)[0].innerText;
+    $c2 = $('#td_c2_' + editTopcid)[0].innerText;
+    $rt = $('#td_rt_' + editTopcid)[0].innerText;
+
+    setC1OnEdit($c1);
+    setC2OnEdit($c2);
+    setRTOnEdit($rt);
+    //$("#selConceptOne").select2('val', null);
+    //$("#selConceptOne").select2('val', $c1).trigger('change');
+    //var $newOption = $("<option selected='selected'></option>").val("TheID").text("The text")
+
+    //$("#myMultipleSelect2").append($newOption).trigger('change');
+    //$("#selConceptOne").val(2).trigger('change');
+
+
+
+    //var $el = $('#selConceptOne');
+    //var data = $el.select2('data')[0]['text'];
+    //alert(data);
+
+    //var value = $el.select2('data')[0]['id'];
+    //alert(value);
+
+
+    //var data = $('#selConceptOne').select2($c1);
+    //alert(data[0].text);
+    //alert(data[0].id);
+
+    $('#updateTopicDetails').removeClass('btnHide').addClass('btnShow');
+    $('#saveAll').removeClass('btnShow').addClass('btnHide');
+}
+
+function setC1OnEdit($c1Val) {
+    $("#selConceptOne > option").each(function () {
+        if (this.text === $c1Val) {
+
+            $("#selConceptOne").val(this.value).trigger('change');
+        }
+    });
+}
+
+function setC2OnEdit($c2Val) {
+    $("#selConceptTwo > option").each(function () {
+        if (this.text === $c2Val) {
+            $("#selConceptTwo").val(this.value).trigger('change');
+        }
+    });
+}
+
+function setRTOnEdit($rtVal) {
+    $("#selRelation > option").each(function () {
+        if (this.text === $rtVal) {
+            $("#selRelation").val(this.value).trigger('change');
+        }
+    });
 }
 
 function Delete(val) {
@@ -125,3 +186,28 @@ function Delete(val) {
         }
     });
 }
+
+//Reset Select 
+function resetTopicDetails() {
+    $("#selConceptOne").val(0).trigger('change');
+    $("#selConceptTwo").val(0).trigger('change');
+    $("#selRelation").val(0).trigger('change');
+
+    $('#updateTopicDetails').removeClass('btnShow').addClass('btnHide');
+    $('#saveAll').removeClass('btnHide').addClass('btnShow');
+}
+
+//update CR
+function updateCR() {
+    //alert(editTopcid);
+    //oldValues = { c1: $c1, c2: $c2, rt: $rt };
+    saveAllWR(true, editTopcid);
+}
+
+
+
+
+
+
+
+

@@ -5,6 +5,14 @@ using System.Web;
 
 namespace WordsRelation.Models
 {
+    public class OldTopicEOModel
+    {
+        public int c1 { get; set; }
+        public int c2 { get; set; }
+        public int rt { get; set; }
+    };
+
+
     public class RelationsEOModel
     {
         public int id { get; set; }
