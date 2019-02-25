@@ -36,7 +36,7 @@ function getAllDetailsForTopic(topicName) {
 
 }
 
-function searchDetailsForTopic(topieditTopcidcName, c1, c2, rt) {
+function searchDetailsForTopic(topicName, c1, c2, rt) {
 
     //Retrieve Relations OnLoad Page
     var request = {
