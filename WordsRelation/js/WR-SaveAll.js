@@ -36,7 +36,8 @@ function saveAllWR(isEdit, editTopicId) {
                         if (!isEdit) {
                             searchDetailsForTopic(topicName, c1, c2, rt);
                         } else {
-                            searchDetailsForTopic(topicName, null, null, null);
+                            //searchDetailsForTopic(topicName, null, null, null);
+                            getAllDetailsForTopic(topicName);
                         }
                     } else {
                         alert('Topic field cannot be empty!!');
@@ -52,7 +53,7 @@ function saveAllWR(isEdit, editTopicId) {
 
 
     } else {
-        alert('None of the fields can be empty!!')
+        alert('None of the fields can be empty!!');
     }
     
 }
