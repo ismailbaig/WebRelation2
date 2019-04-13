@@ -5,51 +5,33 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
     <title></title>
-
-
     <style>
-table, td, th {
-  border: 1px solid black;
-}
-
-.nr{
-    background-color: lightgreen;
-}
-
-table {
-  border-collapse: collapse;
-  width: 100%;
-}
-
-th {
-  text-align: left;
-}
-
-.btnHide{
-    visibility: hidden;
-}
-
-.btnShow{
-    visibility : visible;
-}
+    table, td, th { border: 1px solid black;}
+    .nr{ background-color: lightgreen;}
+    table { border-collapse: collapse; width: 100%;}
+    th { text-align: left;}
+    .btnHide{visibility: hidden; }
+    .btnShow{visibility : visible;}
 </style>
+   
+	
 
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
 
+     <%--<link href="css/bootstrap.min.css" rel="stylesheet">--%>
+    <%--<script src='select2/dist/js/jquery-3.2.1.min.js' type='text/javascript'></script>--%>
+    <%--<script src='js/bootstrap.min.js' type='text/javascript'></script>--%>
+    <script src='select2/dist/js/select2.full.js' type='text/javascript'></script>
 
-    <link href="css/bootstrap.min.css" rel="stylesheet">
-	<link href="css/font-awesome.min.css" rel="stylesheet">
+    <link href="css/font-awesome.min.css" rel="stylesheet">
 	<link href="css/datepicker3.css" rel="stylesheet">
 	<link href="css/styles.css" rel="stylesheet">
 
-    <script src='select2/dist/js/jquery-3.2.1.min.js' type='text/javascript'></script>
-    <%--<script src='select2/dist/js/select2.min.js' type='text/javascript'></script>--%>
-    <script src='select2/dist/js/select2.full.js' type='text/javascript'></script>
-    <%--<script src='https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.5/js/select2.full.js'
-        type="text/javascript"></script>--%>
-
     <link href='select2/dist/css/select2.min.css' rel='stylesheet' type='text/css'>
     <script src='js/WR-Relation.js' type='text/javascript'></script>
-     <script src='js/WR-ConceptOne.js' type='text/javascript'></script>
+    <script src='js/WR-ConceptOne.js' type='text/javascript'></script>
     <script src='js/WR-ConceptTwo.js' type='text/javascript'></script>
     <script src='js/WR-SaveAll.js' type='text/javascript'></script>
     <script src='js/WR-Topics.js' type='text/javascript'></script>
@@ -58,9 +40,7 @@ th {
 <body>
     <form id="form1" runat="server">
         <div>
-
             <asp:Label ID="lblTopicID"  runat="server" Text="Label"></asp:Label>
-
              <nav class="navbar navbar-custom navbar-fixed-top" role="navigation">
 		<div class="container-fluid">
 			<div class="navbar-header">
@@ -69,20 +49,14 @@ th {
 					<span class="icon-bar"></span>
 					<span class="icon-bar"></span></button>
 				<a class="navbar-brand" href="#"><span>Concepts</span>Relation</a>
-		
 			</div>
-		</div><!-- /.container-fluid -->
+		</div>
 	</nav>
-
-
-
-            
     	<div id="sidebar-collapse" class="col-sm-3 col-lg-2 sidebar">
 		<div class="profile-sidebar">
 			<div class="profile-userpic">
 				<img src="http://placehold.it/50/30a5ff/fff" class="img-responsive" alt="">
 			</div>
-	
 			<div class="clear"></div>
 		</div>
 		<div class="divider"></div>
@@ -93,11 +67,7 @@ th {
 			<li><a href="ConceptSearch.aspx"><em class="fa fa-calendar">&nbsp;</em> Search</a></li>
 			<li><a href="ConceptSearch.aspx"><em class="fa fa-power-off">&nbsp;</em> Logout</a></li>
 		</ul>
-	</div><!--/.sidebar-->
-
-
-
-
+	</div>
     <div class="col-sm-9 col-sm-offset-3 col-lg-10 col-lg-offset-2 main">
 		<div class="row">
 			<ol class="breadcrumb">
@@ -158,75 +128,148 @@ th {
                                      <asp:PlaceHolder ID="iframeDocViewer" runat="server"/>
                                     </div>
 								</div>
-						
 
-                       
-                     <!-- start project list -->
-               <asp:GridView ID="grdvConceptRelation" runat="server" AutoGenerateColumns="False">
-            <Columns>
-              <asp:BoundField DataField="CrID" HeaderText="Id" Visible="False"></asp:BoundField>
-              
-              <asp:BoundField DataField="ConceptOne" HeaderText="Concept One">
-                  <HeaderStyle BackColor="#3498DB" ForeColor="White" Height="30px" HorizontalAlign="Center" VerticalAlign="Middle" Width="150"></HeaderStyle>
-                  
-              </asp:BoundField>
-              <asp:BoundField DataField="ConceptTwo" HeaderText="Concept Two">
-                  <HeaderStyle BackColor="#3498DB" ForeColor="White" Height="30px"  HorizontalAlign="Center" VerticalAlign="Middle" Width="150"></HeaderStyle>
-              </asp:BoundField>
-              <asp:BoundField DataField="CoceptRelation" HeaderText="Relation Type">
-                  <HeaderStyle BackColor="#3498DB" ForeColor="White" Height="30px" HorizontalAlign="Center" VerticalAlign="Middle" Width="150"></HeaderStyle>
-              </asp:BoundField>
-             
-              <asp:ButtonField Text="Edit" HeaderText="Modify">
-                  <HeaderStyle BackColor="#3498DB" ForeColor="White" Height="30px" HorizontalAlign="Center" VerticalAlign="Middle" Width="150"></HeaderStyle>
-                  <ItemStyle ForeColor="#0066FF"></ItemStyle>
-              </asp:ButtonField>
-
-             
-          </Columns>
-
-     <alternatingrowstyle backcolor="PaleTurquoise"  
-          forecolor="DarkBlue"
-         />
-    <RowStyle ForeColor="#4A3C8C" BackColor="#E7E7FF" Height="30px" HorizontalAlign="Center" VerticalAlign="Middle"></RowStyle>
-      </asp:GridView>
-
-
-                                	</form>
-								</div>
-								<div class="col-md-4">
-							<div class="form-group">
-									<label>Concept 1</label>
-								
-                               <%-- <asp:TextBox ID="txtConcept1" class="form-control" runat="server"></asp:TextBox>
-							--%>	
-                                <select class="form-control" id='selConceptOne' >
-                                <option></option>
-                                <option value="NEW">Add new type</option>
-                                </select>
-
-							</div>
-								<div class="form-group">
-									<label>Concept 2</label>
-								
-                                     <%--<asp:TextBox ID="txtConcept2" class="form-control" runat="server"></asp:TextBox>
-							--%>
-                                <select class="form-control" id='selConceptTwo' >
-                                <option></option>
-                                <option value="NEW">Add new type</option>
-                                </select>
-								</div>
-									<div class="form-group">
-										<label>Relation Type</label>
-                                       <!-- Dropdown -->
-    <select class="form-control" id='selRelation' >
-        <option></option>
-        <option value="NEW">Add new type</option>
-        
-    </select>
-    <br />
-    <div id='result'></div>					
+    <!-- Concept One Modal -->
+    <div class="modal fade" id="newConceptOneId" tabindex="-1" role="dialog" aria-labelledby="newConceptOneLabel" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="newConceptOneLabel">Add New Concept One</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <form>
+              <div class="form-group">
+                <label for="newC1Val" class="col-form-label">Enter New Value:</label>
+                <input type="text" class="form-control" id="newC1Val">
+              </div>
+              <div class="form-group">
+                <label for="newC1Type" class="col-form-label">Enter New Type:</label>
+                <input type="text" class="form-control" id="newC1Type">
+              </div>
+              <div class="form-group">
+                <label for="newC1Property" class="col-form-label">Enter New Property:</label>
+                <input type="text" class="form-control" id="newC1Property">
+              </div>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-primary" onclick="addNewC1()">Save New C1</button>
+          </div>
         </div>
+      </div>
+    </div>
+
+    <!-- Concept Two Modal -->
+    <div class="modal fade" id="newConceptTwoId" tabindex="-1" role="dialog" aria-labelledby="newConceptTwoLabel" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="newConceptTwoLabel">Add New Concept Two</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <form>
+              <div class="form-group">
+                <label for="newC2Val" class="col-form-label">Enter New Value:</label>
+                <input type="text" class="form-control" id="newC2Val">
+              </div>
+              <div class="form-group">
+                <label for="newC2Type" class="col-form-label">Enter New Type:</label>
+                <input type="text" class="form-control" id="newC2Type">
+              </div>
+              <div class="form-group">
+                <label for="newC2Property" class="col-form-label">Enter New Property:</label>
+                <input type="text" class="form-control" id="newC2Property">
+              </div>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-primary" onclick="addNewC2()">Save New C2</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- New Relation Type Modal -->
+    <div class="modal fade" id="newRelationTypeId" tabindex="-1" role="dialog" aria-labelledby="newRelationTypeLabel" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="newRelationTypeLabel">Add New Relation Type</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <form>
+              <div class="form-group">
+                <label for="newRTVal" class="col-form-label">Enter New Value:</label>
+                <input type="text" class="form-control" id="newRTVal">
+              </div>
+              <div class="form-group">
+                <label for="newRTType" class="col-form-label">Enter New Type:</label>
+                <input type="text" class="form-control" id="newRTType">
+              </div>
+              <div class="form-group">
+                <label for="newRTProperty" class="col-form-label">Enter New Property:</label>
+                <input type="text" class="form-control" id="newRTProperty">
+              </div>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-primary" onclick="addNewRT()">Save New RT</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    </form></div>
+        <div class="col-md-4">
+		 <div class="form-group">
+		    <label>Concept 1</label>
+			  <select class="form-control" id='selConceptOne' >
+               <option></option>
+               <%--<option value="NEW">Add new type</option>--%>
+                </select></div>
+                 <div>
+                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#newConceptOneId">
+                        Add New Concept 1
+                    </button>
+                </div><br />
+				<div class="form-group">
+				<label>Concept 2</label>
+                <select class="form-control" id='selConceptTwo' >
+                <option></option>
+                <%-- <option value="NEW">Add new type</option>--%>
+                </select>
+				</div>
+                <div>
+                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#newConceptTwoId">
+                        Add New Concept 2
+                    </button>
+                </div><br />
+				<div class="form-group">
+					<label>Relation Type</label>
+                    <select class="form-control" id='selRelation' >
+                    <option></option>
+                    <%--<option value="NEW">Add new type</option>--%>
+                </select>   
+                <br />
+                <div id='result'></div>					
+                </div>
+                <div>
+                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#newRelationTypeId">
+                    Add New Relation Type
+                </button>
+                </div><br />
             <input  type='button' value='SaveAll' id='saveAll' class="btn btn-primary btnShow">
             <input  type='button' value='Search' id='searchTopicDetails' class="btn btn-primary">
             <input  type='button' value='Update' id='updateTopicDetails' 
@@ -235,7 +278,8 @@ th {
                 class="btn btn-primary">
         </div></div></div></div></div>
     <table id="topicDetailsTable"></table>
-    </div></div></form>
+    </div></div>
+    </form>
 </body>
 </html>
 <!-- Script -->

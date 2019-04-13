@@ -59,13 +59,14 @@ namespace WordsRelation
         }
 
         [WebMethod]
-        public static List<RelationsEOModel> GetNewRT(string rtNew)
+        public static List<RelationsEOModel> GetNewRT(string newVal, string newType, string newProperty)
         {
-            if (SaveNewRTToDB(rtNew)) {
-                return GetAllRelations(rtNew);
-            } else  {
-                return null;
-            }
+            //if (SaveNewRTToDB(newVal)) {
+            //    return GetAllRelations(newVal);
+            //} else  {
+            //    return null;
+            //}
+            return null;
         }
 
         [WebMethod]
@@ -196,13 +197,14 @@ namespace WordsRelation
         }
 
         [WebMethod]
-        public static List<ConceptOneEOModel> GetNewConceptOne(string val)
+        public static List<ConceptOneEOModel> GetNewConceptOne(string newVal, string newType, string newProperty)
         {
-            if (SaveNewC1ToDB(val))
-            {
-                return GetAllConceptOne(null);
-            }
-            else { return null; }
+            //if (SaveNewC1ToDB(newVal))
+            //{
+            //    return GetAllConceptOne(null);
+            //}
+            //else { return null; }
+            return null;
         }
 
         [WebMethod]
@@ -236,7 +238,7 @@ namespace WordsRelation
             }
         }
 
-            private static bool SaveNewC1ToDB(string c1NewVal) {
+        private static bool SaveNewC1ToDB(string c1NewVal) {
 
             int count = 0;
 
@@ -313,14 +315,15 @@ namespace WordsRelation
         }
 
         [WebMethod]
-        public static List<ConceptTwoEOModel> GetNewConceptTwo(string c2NewVal)
+        public static List<ConceptTwoEOModel> GetNewConceptTwo(string newVal, string newType, string newProperty)
         {
-            if (SaveNewC2ToDB(c2NewVal))
-            {
-                return GetAllConceptTwo(null);
-            }
+            //if (SaveNewC2ToDB(newVal))
+            //{
+            //    return GetAllConceptTwo(null);
+            //}
 
-            else { return null; }
+            //else { return null; }
+            return null;
 
         }
 
@@ -491,33 +494,102 @@ namespace WordsRelation
             {
                 try
                 {
+
+                    DirectoryInfo convertedDocsDirectory =
+                                    new DirectoryInfo(Server.MapPath(DocxConvertedToHtmlDirectory));
+
+                    if (!convertedDocsDirectory.Exists)
+                        convertedDocsDirectory.Create();
+
                     fileNameFromUser = string.Empty;
                     fileNameFromUser = FileUploadContent.FileName;
 
-                    var fiFileName = new FileInfo(fileNameFromUser);
-                    if (Util.IsWordprocessingML(fiFileName.Extension))
+                    if (Path.GetExtension(fileNameFromUser) == ".pdf")
                     {
-                        using (MemoryStream memoryStream = new MemoryStream())
+                        string noSpaceFileName = fileNameFromUser.Replace(" ", "");
+                        //File.Copy()
+                        Session["ByteArray"] = FileUploadContent.FileBytes;
+                        Session["FileNameFromUser"] = noSpaceFileName;
+
+                        byte[] pdfByteArray = (byte[])(Session["ByteArray"]);
+
+                        if (pdfByteArray != null)
                         {
-                            memoryStream.Write(FileUploadContent.FileBytes, 0,
-                                FileUploadContent.FileBytes.Length);
-
-                            using (WordprocessingDocument wDoc =
-                                WordprocessingDocument.Open(memoryStream, true))
+                            try
                             {
-                            }
+                                File.WriteAllBytes(convertedDocsDirectory + noSpaceFileName, pdfByteArray);
 
-                            lblMessage.Text = "File Uploaded Successfully";
-                            Session["ByteArray"] = FileUploadContent.FileBytes;
-                            Session["FileNameFromUser"] = fileNameFromUser;
+                                iframeDocViewer.Controls.Add(new LiteralControl("<embed width='700' height='315' " +
+                                    "src=" + @"DocxConvertedToHtml\" + noSpaceFileName + "></embed><br />"));
+                            }
+                            catch (Exception ex) {
+                                Session["ByteArray"] = null;
+                                Session["FileNameFromUser"] = null;
+                            }
                         }
                     }
                     else
                     {
-                        lblMessage.Text = "Error: Not a WordprocessingML document";
-                        Session["ByteArray"] = null;
-                        Session["FileNameFromUser"] = null;
+                        var fiFileName = new FileInfo(fileNameFromUser);
 
+                        if (Util.IsWordprocessingML(fiFileName.Extension))
+                        {
+                            using (MemoryStream memoryStream = new MemoryStream())
+                            {
+                                memoryStream.Write(FileUploadContent.FileBytes, 0,
+                                    FileUploadContent.FileBytes.Length);
+
+                                //using (WordprocessingDocument wDoc =
+                                //    WordprocessingDocument.Open(memoryStream, true))
+                                //{
+                                //}
+
+                                lblMessage.Text = "File Uploaded Successfully";
+                                Session["ByteArray"] = FileUploadContent.FileBytes;
+                                Session["FileNameFromUser"] = fileNameFromUser;
+                            }
+                        }
+                        else
+                        {
+                            lblMessage.Text = "Error: Not a WordprocessingML document";
+                            Session["ByteArray"] = null;
+                            Session["FileNameFromUser"] = null;
+
+                        }
+
+                        byte[] byteArray = (byte[])(Session["ByteArray"]);
+
+                        if (byteArray != null)
+                        {
+                            try
+                            {
+                                //convertedDocsDirectory =
+                                //    new DirectoryInfo(Server.MapPath(DocxConvertedToHtmlDirectory));
+
+                                //if (!convertedDocsDirectory.Exists)
+                                //    convertedDocsDirectory.Create();
+
+                                Guid g = Guid.NewGuid();
+                                var htmlFileName = Session["FileNameFromUser"].ToString().Replace(".docx", "").Replace(" ", "$sPaC" +
+                                    "" +
+                                    "e$").ToString()
+                                    + "_" + g.ToString() + ".html";
+                                ConvertToHtml(byteArray
+                                    , convertedDocsDirectory, htmlFileName);
+
+                                iframeDocViewer.Controls.Add(new LiteralControl("<iframe width='600' height='315' " +
+                                    "src=" + @"DocxConvertedToHtml\" + htmlFileName + "></iframe><br />"));
+
+                            }
+                            catch (Exception ex)
+                            {
+                                lblMessage.Text = "Error: " + ex.Message.ToString();
+                            }
+                        }
+                        else
+                        {
+                            lblMessage.Text = "You have not specified a file.";
+                        }
                     }
 
                 }
@@ -537,51 +609,7 @@ namespace WordsRelation
 
             }
 
-            byte[] byteArray = (byte[])(Session["ByteArray"]);
-
-            if (byteArray != null)
-            {
-                try
-                {
-                    DirectoryInfo convertedDocsDirectory =
-                        new DirectoryInfo(Server.MapPath(DocxConvertedToHtmlDirectory));
-
-                    if (!convertedDocsDirectory.Exists)
-                        convertedDocsDirectory.Create();
-
-                    Guid g = Guid.NewGuid();
-                    var htmlFileName = Session["FileNameFromUser"].ToString().Replace(".docx", "").Replace(" ", "$sPaC" +
-                        "" +
-                        "e$").ToString()
-                        + "_" + g.ToString() + ".html";
-                    ConvertToHtml(byteArray
-                        , convertedDocsDirectory, htmlFileName);
-
-                    //Store in Database the file name and path
-                    //using (ConceptsRelationDBEntities1 context = new ConceptsRelationDBEntities1())
-                    //{
-                    //    context.MasterFiles.Add(new MasterFile
-                    //    {
-                    //        FilePath = convertedDocsDirectory.Name + @"\" + htmlFileName,
-                    //        Name = htmlFileName
-                    //    });
-
-                    //    context.SaveChanges();
-                    //}
-
-                    iframeDocViewer.Controls.Add(new LiteralControl("<iframe width='600' height='315' " +
-                        "src=" + @"DocxConvertedToHtml\" + htmlFileName + "></iframe><br />"));
-
-                }
-                catch (Exception ex)
-                {
-                    lblMessage.Text = "Error: " + ex.Message.ToString();
-                }
-            }
-            else
-            {
-                lblMessage.Text = "You have not specified a file.";
-            }
+            
         }
 
         private static void ConvertToHtml(byte[] byteArray, DirectoryInfo destDirectory,
