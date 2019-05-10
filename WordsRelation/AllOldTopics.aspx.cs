@@ -24,6 +24,8 @@ namespace WordsRelation
             ConceptTwo c2Details = new ConceptTwo();
             Topic topicDBEntity = new Topic();
 
+            List<string> lstTopicName = new List<string>();
+
             List<TopicDetailsEOModel> topicDetailsEOList = new List<TopicDetailsEOModel>();
 
             try
@@ -31,23 +33,28 @@ namespace WordsRelation
 
                 using (var context = new ConceptsRelationDBEntities())
                 {
-                    saveAllCRList = context.SaveAllCRs.ToList<SaveAllCR>();
+                    //saveAllCRList = context.SaveAllCRs.ToList<SaveAllCR>().Distinct();
+                    lstTopicName = context.SaveAllCRs.Select(scr => scr.Topic.TopicsName).Distinct().ToList<string>();
+                    //var result = EFContext.TestAddresses.Select(m => m.Name).Distinct();
 
-                    foreach (SaveAllCR cr in saveAllCRList)
+                    //foreach (SaveAllCR cr in saveAllCRList)
+                    foreach (string cr in lstTopicName)
                     {
                         topicDetailsEOList.Add(new TopicDetailsEOModel
                         {
-                            TopicDetailsId = cr.Id,
-                            ConceptOne = cr.ConceptOne.ConceptOneName,
-                            ConceptTwo = cr.ConceptTwo.ConceptTwoName,
-                            RelationType = cr.Relation.RelationName,
-                            TopicName = cr.Topic.TopicsName
+                            //TopicDetailsId = cr.Id,
+                            //ConceptOne = cr.ConceptOne.ConceptOneName,
+                            //ConceptTwo = cr.ConceptTwo.ConceptTwoName,
+                            //RelationType = cr.Relation.RelationName,
+                            //TopicName = cr.Topic.TopicsName
+                            TopicName = cr
                         });
                     }
                 }
 
                 //topicDetailsEOList.Select(x => x.TopicDetailsId).Distinct();
                 //topicDetailsEOList.Select(x => x.TopicDetailsId=5);
+
                 grdvTopics.DataSource = topicDetailsEOList;
                 grdvTopics.DataBind();
                 //  return topicDetailsEOList;

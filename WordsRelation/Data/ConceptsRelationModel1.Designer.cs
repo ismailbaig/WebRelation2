@@ -1,4 +1,4 @@
-﻿// T4 code generation is enabled for model 'C:\Users\Suhail\Pictures\Hasan\New folder (2)\WordRelation-master\WordsRelation\Data\ConceptsRelationModel1.edmx'. 
+﻿// T4 code generation is enabled for model 'E:\WordRelation-master_4\WordRelation-master\WordsRelation\Data\ConceptsRelationModel1.edmx'. 
 // To enable legacy code generation, change the value of the 'Code Generation Strategy' designer
 // property to 'Legacy ObjectContext'. This property is available in the Properties Window when the model
 // is open in the designer.

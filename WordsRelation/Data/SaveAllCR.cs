@@ -24,5 +24,6 @@ namespace WordsRelation.Data
         public virtual ConceptTwo ConceptTwo { get; set; }
         public virtual Relation Relation { get; set; }
         public virtual Topic Topic { get; set; }
+        public virtual ConceptOne ConceptOne1 { get; set; }
     }
 }

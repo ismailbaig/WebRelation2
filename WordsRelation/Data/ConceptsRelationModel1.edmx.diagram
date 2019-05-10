@@ -15,6 +15,7 @@
         <AssociationConnector Association="ConceptsRelationDBModel.FK__SaveAllCR__fC2Id__4CA06362" />
         <AssociationConnector Association="ConceptsRelationDBModel.FK__SaveAllCR__fRId__4AB81AF0" />
         <AssociationConnector Association="ConceptsRelationDBModel.FK__SaveAllCR__fTopi__49C3F6B7" />
+        <AssociationConnector Association="ConceptsRelationDBModel.FK__SaveAllCR__fC2Id__1ED998B2" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

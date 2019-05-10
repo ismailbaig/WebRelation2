@@ -1,5 +1,7 @@
 ﻿using DocumentFormat.OpenXml.Packaging;
 using LinqKit;
+using Neo4jClient;
+using Newtonsoft.Json.Serialization;
 using OpenXmlPowerTools;
 using System;
 using System.Collections.Generic;
@@ -29,9 +31,10 @@ namespace WordsRelation
             //    //GetAllItems();
             //}
 
+            string topicName = Request.QueryString["TopicName"];
 
-            lblTopicID.Text = Request.QueryString["TopicID"];
-            string id = lblTopicID.Text;
+            //topic = topicName;
+            
             using (var context = new ConceptsRelationDBEntities())
             {
                 //grdvConceptRelation.DataSource = context.MasterConceptRelations.Where(c => c.TopicID == id).ToList<MasterConceptRelation>();
@@ -61,19 +64,23 @@ namespace WordsRelation
         [WebMethod]
         public static List<RelationsEOModel> GetNewRT(string newVal, string newType, string newProperty)
         {
-            //if (SaveNewRTToDB(newVal)) {
-            //    return GetAllRelations(newVal);
-            //} else  {
-            //    return null;
-            //}
-            return null;
+            if (SaveNewRTToDB(newVal))
+            {
+                return GetAllRelations(newVal);
+            }
+            else
+            {
+                return null;
+            }
         }
 
+        
         [WebMethod]
-        public static List<TopicDetailsEOModel> Search(string topic, int c1, int c2, int rt)
-        //public static List<TopicDetailsEOModel> Search(string topic, string c1, string c2, string rt)
+        public static List<Label> GetNeo4JQuery(string topic, int c1, int c2, int rt)
         {
 
+
+           
 
             int count = 0;
             List<SaveAllCR> saveAllCRList = new List<SaveAllCR>();
@@ -115,14 +122,14 @@ namespace WordsRelation
                     predicate = predicate.And(p => p.ConceptTwo.C2Id.ToString().Contains(searchCriteria.concept2.ToString()));
                 }
                 //if (!string.IsNullOrWhiteSpace(searchCriteria.relationType.ToString()))
-                if(searchCriteria.relationType.ToString() != "0")
+                if (searchCriteria.relationType.ToString() != "0")
                 {
                     predicate = predicate.And(p => p.Relation.RelID.ToString().Contains(searchCriteria.relationType.ToString()));
                 }
                 using (var context = new ConceptsRelationDBEntities())
                 {
                     saveAllCRList = context.SaveAllCRs.
-                        Where( predicate.Compile())
+                        Where(predicate.Compile())
                         //Where(tp => tp.Topic.TopicsName == topic)
                         .ToList<SaveAllCR>();
 
@@ -140,7 +147,294 @@ namespace WordsRelation
                     }
                 }
 
-                return topicDetailsEOList;
+
+                List<TopicDetailsEOModel> topicConceptRelation = new List<TopicDetailsEOModel>();
+                List<Label> PlaceHolder1 = new List<Label>();
+
+
+
+                var concepOnetList = topicDetailsEOList.Select(x => x.ConceptOne).Distinct().ToList();
+                var concepTwotList = topicDetailsEOList.Select(x => x.ConceptTwo).Distinct().ToList();
+                //  return topicDetailsEOList;
+
+
+                topicConceptRelation = topicDetailsEOList;
+
+
+                List<string> concepOnetList_1 = new List<string>();
+                int j = 1;
+                for (int i = 0; i < concepOnetList.Count(); i++)
+                {
+
+                    // topicConceptRelation.Add(new TopicDetailsEOModel() {  ConceptOne = concept1 });
+                    string concept1 = "";
+                    concept1 = concepOnetList[i].Replace(" ", String.Empty);
+                    concept1 = concept1 + j.ToString();
+
+                    foreach (var item in topicConceptRelation)
+                    {
+
+                        if (concepOnetList[i] == item.ConceptOne)
+                        {
+
+                            int index = topicConceptRelation.FindIndex(obj => obj.ConceptOne == concepOnetList[i]);
+                            //int index = topicConceptRelation.FindIndex(ind => ind.Equals(concepOnetList[i])); //Finds the item index  
+
+                            //topicConceptRelation[index].ConceptOne = concept1;
+                            topicConceptRelation[index].ConceptOne = concept1;
+
+                        }
+                    }
+
+
+
+                    Label myLabel = new Label();
+                    myLabel.ID = "myLabel_" + j;
+
+                    myLabel.Text = "CREATE(" + concept1 + ":Album { Name:" + '"' + concepOnetList[i] + '"' + "})";
+                    PlaceHolder1.Add(myLabel);
+                    //PlaceHolder1.Controls.Add(new LiteralControl("<br/>"));
+                    j++;
+                }
+
+                int k = concepOnetList.Count() + 1;
+                for (int i = 0; i < concepTwotList.Count(); i++)
+                {
+                    string concept2 = "";
+                    concept2 = concepTwotList[i].Replace(" ", String.Empty);
+                    concept2 = concept2 + k.ToString();
+                    foreach (var item in topicConceptRelation)
+                    {
+
+                        if (concepTwotList[i] == item.ConceptTwo)
+                        {
+
+
+                            int index = topicConceptRelation.FindIndex(obj => obj.ConceptTwo == concepTwotList[i]);
+                            //int index = topicConceptRelation.FindIndex(ind => ind.Equals(concepOnetList[i])); //Finds the item index  
+
+                            //topicConceptRelation[index].ConceptOne = concept1;
+                            topicConceptRelation[index].ConceptTwo = concept2;
+                        }
+                    }
+
+
+
+                    List<Label> testlist = new List<Label>();
+                    Label myLabel = new Label();
+                    myLabel.ID = "myLabel_" + k;
+
+                    myLabel.Text = "CREATE(" + concept2 + ":Album { Name:" + '"' + concepTwotList[i] + '"' + "})";
+                    testlist.Add(myLabel);
+                    PlaceHolder1.Add(myLabel);
+                   // PlaceHolder1.Controls.Add(new LiteralControl("<br/>"));
+                    k++;
+                }
+
+                // var totalConcepts = concepOnetList.Concat(concepTwotList).ToList();
+
+
+                int r = 1;
+                List<string> relationsList = new List<string>();
+                //for (int i = 0; i < topicConceptRelation.Count(); i++)
+                foreach (var item in topicConceptRelation)
+                {
+                    string relations = "";
+                    relations = item.RelationType.Replace(" ", String.Empty);
+                    relations = relations + r.ToString();
+
+                    Label myLabel = new Label();
+                    myLabel.ID = "myLabel_" + j;
+
+                    //if(item.TopicDetailsId == tipicId )
+                    //{
+
+                    //var concept1 = totalConcepts.Select(x => x = item.ConceptOne);
+                    ////CREATE(a) -[r: RELEASED]->(b)
+                    myLabel.Text = "CREATE(" + item.ConceptOne + ") -[" + relations + ":" + item.RelationType + "]->(" + item.ConceptTwo + ")";
+                    PlaceHolder1.Add(myLabel);
+                   // PlaceHolder1.Controls.Add(new LiteralControl("<br/>"));
+                    relationsList.Add(relations);
+                    //}
+                    r++;
+                }
+
+
+                string retDtat = "";
+                string ret = "RETURN ";
+                var concepOnetList1 = topicConceptRelation.Select(x => x.ConceptOne).Distinct().ToList();
+                var concepTwoList1 = topicConceptRelation.Select(x => x.ConceptTwo).Distinct().ToList();
+                for (int i = 0; i < concepOnetList1.Count(); i++)
+                {
+                    //foreach (var item in topicConceptRelation)
+                    //{
+                    //    if (concepOnetList[i] == item.ConceptOne)
+                    //    {
+
+
+                    retDtat = retDtat + concepOnetList1[i] + ",";
+                    //    }
+
+
+                    //   // j++;
+                    //}
+                }
+
+                for (int i = 0; i < concepTwoList1.Count(); i++)
+                {
+                    //foreach (var item in topicConceptRelation)
+                    //{
+                    //    if (concepTwotList[i] == item.ConceptTwo)
+                    //    {
+
+                    retDtat = retDtat + concepTwoList1[i] + ",";
+                    //    }
+                    //}
+                }
+
+                for (int i = 0; i < relationsList.Count(); i++)
+                {
+                    retDtat = retDtat + relationsList[i] + ",";
+                }
+
+
+                Label retLabel = new Label();
+                retLabel.ID = "myLabel_" + j;
+                retLabel.Text = ret + retDtat;
+                PlaceHolder1.Add(retLabel);
+
+
+
+
+
+
+
+                return PlaceHolder1;
+
+            }
+            catch (Exception ex)
+            {
+                return null;
+            }
+        }
+
+        [WebMethod]
+        public static List<TopicDetailsEOModel> Search(string topic, int c1, int c2, int rt)
+        //public static List<TopicDetailsEOModel> Search(string topic, string c1, string c2, string rt)
+        {
+
+
+            int count = 0;
+            List<SaveAllCR> saveAllCRList = new List<SaveAllCR>();
+            List<SaveAllCR> saveAllCRList1 = new List<SaveAllCR>();
+            SaveAllCR saveAllCR = new SaveAllCR();
+
+            Relation relation = new Relation();
+            ConceptOne c1Details = new ConceptOne();
+            ConceptTwo c2Details = new ConceptTwo();
+            Topic topicDBEntity = new Topic();
+
+
+            List<TopicDetailsEOModel> topicDetailsEOList = new List<TopicDetailsEOModel>();
+
+
+
+            try
+            {
+
+    
+
+
+                using (var context = new ConceptsRelationDBEntities())
+                    {
+                        saveAllCRList = context.SaveAllCRs.Where(tp => tp.Topic.TopicsName == topic).ToList<SaveAllCR>();
+
+
+                    foreach (var item in saveAllCRList)
+                    {
+                        if (item.fC1Id == c1 || item.fC1Id == c2 || item.fRId == rt)
+                        {
+                            saveAllCRList1.Add(item);
+                        }
+                    }
+
+
+                    foreach (SaveAllCR cr in saveAllCRList1)
+                        {
+                            topicDetailsEOList.Add(new TopicDetailsEOModel
+                            {
+                                TopicDetailsId = cr.Id,
+                                ConceptOne = cr.ConceptOne.ConceptOneName,
+                                ConceptTwo = cr.ConceptOne1.ConceptOneName,
+                                RelationType = cr.Relation.RelationName,
+                                TopicName = cr.Topic.TopicsName
+                            });
+                        }
+                    }
+
+              
+             
+
+
+
+                    //    var searchCriteria = new
+                    //    {
+                    //        topicName = topic,
+                    //        concept1 = c1,
+                    //        concept2 = c2,
+                    //        relationType = rt
+                    //    };
+
+                    //    var predicate = PredicateBuilder.New<SaveAllCR>();
+
+                    //    if (!string.IsNullOrWhiteSpace(searchCriteria.topicName.ToString()))
+                    //    {
+                    //        predicate = predicate.And(p => p.Topic.TopicsName.Contains(searchCriteria.topicName));
+                    //    }
+
+                    //    //if (!string.IsNullOrWhiteSpace(searchCriteria.concept1.ToString()))
+                    //    if (searchCriteria.concept1.ToString() != "0")
+                    //    {
+                    //        //predicate = predicate.And(p => p.ConceptOne.ConceptOneName.Contains(searchCriteria.concept1.ToString()));
+                    //        //predicate = predicate.And(p => p.ConceptOne.C1Id.ToString().Contains(searchCriteria.concept1.ToString()));
+                    //        predicate = predicate.And(p => p.ConceptOne.C1Id.ToString().Contains(searchCriteria.concept1.ToString()));
+                    //    }
+                    //    //if (!string.IsNullOrWhiteSpace(searchCriteria.concept2.ToString()))
+                    //    if (searchCriteria.concept2.ToString() != "0")
+                    //    {
+                    //        predicate = predicate.And(p => p.ConceptTwo.C2Id.ToString().Contains(searchCriteria.concept2.ToString()));
+                    //    }
+                    //    //if (!string.IsNullOrWhiteSpace(searchCriteria.relationType.ToString()))
+                    //    if(searchCriteria.relationType.ToString() != "0")
+                    //    {
+                    //        predicate = predicate.And(p => p.Relation.RelID.ToString().Contains(searchCriteria.relationType.ToString()));
+                    //    }
+                    //    using (var context = new ConceptsRelationDBEntities())
+                    //    {
+                    //        saveAllCRList = context.SaveAllCRs.
+                    //            Where( predicate.Compile())
+                    //            //Where(tp => tp.Topic.TopicsName == topic)
+                    //            .ToList<SaveAllCR>();
+
+                    //        foreach (SaveAllCR cr in saveAllCRList)
+                    //        {
+
+                    //            topicDetailsEOList.Add(new TopicDetailsEOModel
+                    //            {
+                    //                TopicDetailsId = cr.Id,
+                    //                ConceptOne = cr.ConceptOne.ConceptOneName,
+                    //                ConceptTwo = cr.ConceptTwo.ConceptTwoName,
+                    //                RelationType = cr.Relation.RelationName,
+                    //                TopicName = cr.Topic.TopicsName
+                    //            });
+                    //        }
+                    //    }
+
+
+
+
+
+                    return topicDetailsEOList;
 
             }
             catch (Exception ex)
@@ -162,6 +456,9 @@ namespace WordsRelation
 
                 if(saveDetails >= 0)
                 {
+
+
+
                     return true;
                 }
                 else
@@ -199,12 +496,40 @@ namespace WordsRelation
         [WebMethod]
         public static List<ConceptOneEOModel> GetNewConceptOne(string newVal, string newType, string newProperty)
         {
-            //if (SaveNewC1ToDB(newVal))
+            using (ConceptsRelationDBEntities context = new ConceptsRelationDBEntities())
+            {
+
+                context.ConceptOnes.Add(new ConceptOne { ConceptOneName = newVal });
+         
+
+
+
+            }
+
+
+            //var client = new GraphClient(new Uri("http://localhost:11002/db/data"), "neo4j", "mohammed123805")
             //{
-            //    return GetAllConceptOne(null);
-            //}
-            //else { return null; }
-            return null;
+            //    JsonContractResolver = new CamelCasePropertyNamesContractResolver()
+            //};
+
+            //client.Connect();
+
+            //var conceptOne = new ConceptOne1 { Name = newVal, description = newProperty };
+            //client.Cypher
+            //    .Create("(conceptone:ConceptOne {conceptB})")
+            //    .WithParam("conceptB", conceptOne)
+            //    .ExecuteWithoutResultsAsync()
+            //    .Wait();
+
+
+
+
+            if (SaveNewC1ToDB(newVal))
+            {
+                return GetAllConceptOne(null);
+            }
+            else { return null; }
+
         }
 
         [WebMethod]
@@ -238,7 +563,21 @@ namespace WordsRelation
             }
         }
 
-        private static bool SaveNewC1ToDB(string c1NewVal) {
+
+        //[WebMethod]
+        //public static List<ConceptOneEOModel> GetNewConceptOne(string val)
+        //{
+        //    if (SaveNewC1ToDB(val))
+        //    {
+        //        return GetAllConceptOne(null);
+        //    }
+
+        //    else { return null; }
+
+        //}
+
+        private static bool SaveNewC1ToDB(string c1NewVal)
+        {
 
             int count = 0;
 
@@ -254,13 +593,32 @@ namespace WordsRelation
 
                 if (count > 0)
                 {
+
+
+                    //var client = new GraphClient(new Uri("http://localhost:11002/db/data"), "neo4j", "mohammed123805")
+                    //{
+                    //    JsonContractResolver = new CamelCasePropertyNamesContractResolver()
+                    //};
+
+                    //client.Connect();
+
+                    //var conceptOne = new ConceptOne1 { Name = c1NewVal };
+                    //client.Cypher
+                    //    .Create("(conceptone:ConceptOne {conceptB})")
+                    //    .WithParam("conceptB", conceptOne)
+                    //    .ExecuteWithoutResultsAsync()
+                    //    .Wait();
+
+
+
                     return true;
                 }
                 else { return false; }
-                    
+
             }
 
-            catch(Exception es) { return false; }
+            catch (Exception es) { return false; }
+
         }
 
         [WebMethod]
@@ -317,13 +675,30 @@ namespace WordsRelation
         [WebMethod]
         public static List<ConceptTwoEOModel> GetNewConceptTwo(string newVal, string newType, string newProperty)
         {
-            //if (SaveNewC2ToDB(newVal))
+            //var client = new GraphClient(new Uri("http://localhost:11002/db/data"), "neo4j", "mohammed123805")
             //{
-            //    return GetAllConceptTwo(null);
-            //}
+            //    JsonContractResolver = new CamelCasePropertyNamesContractResolver()
+            //};
 
-            //else { return null; }
-            return null;
+            //client.Connect();
+
+
+
+            //var conceptTwo = new ConceptTwo2 { Name = newVal , description = newProperty };
+            //client.Cypher
+            //    .Create("(concepttwo:ConceptTwo {conceptB})")
+            //    .WithParam("conceptB", conceptTwo)
+            //    .ExecuteWithoutResultsAsync()
+            //    .Wait();
+
+
+
+            if (SaveNewC2ToDB(newVal))
+            {
+                return GetAllConceptTwo(null);
+            }
+
+            else { return null; }
 
         }
 
@@ -344,6 +719,11 @@ namespace WordsRelation
 
                 if (count > 0)
                 {
+
+                   
+
+
+
                     return true;
                 }
                 else { return false; }
@@ -358,6 +738,8 @@ namespace WordsRelation
         {
             int count = 0;
             Topic topicDBEntity = new Topic();
+            List<SaveAllCR> saveAllCRList = new List<SaveAllCR>();
+            List<TopicDetailsEOModel> topicDetailsEOList = new List<TopicDetailsEOModel>();
             try
             {
 
@@ -404,9 +786,59 @@ namespace WordsRelation
                         //hm1.grdvConceptRelation.DataSource = context.MasterConceptRelations.Where(c => c.TopicName == "Topic 2").ToList<MasterConceptRelation>();
                         //hm1.grdvConceptRelation.DataBind();
                     }
+
+                   
+
+                    using (var context = new ConceptsRelationDBEntities())
+                    {
+                        saveAllCRList = context.SaveAllCRs.Where(tp => tp.Topic.TopicsName == topic && tp.Relation.RelID==rtVal && tp.ConceptOne.C1Id== c1Val && tp.ConceptTwo.C2Id== c2Val).ToList<SaveAllCR>();
+
+                        foreach (SaveAllCR cr in saveAllCRList)
+                        {
+
+                            TopicDetailsEOModel tdEoModel = new TopicDetailsEOModel();
+                            tdEoModel.TopicDetailsId = cr.Id;
+                            tdEoModel.ConceptOne = cr.ConceptOne.ConceptOneName;
+                            tdEoModel.ConceptTwo = cr.ConceptOne1.ConceptOneName;
+                            tdEoModel.RelationType = cr.Relation.RelationName;
+                            tdEoModel.TopicName = cr.Topic.TopicsName;
+
+                            topicDetailsEOList.Add(tdEoModel);
+
+                            //topicDetailsEOList.Add(new TopicDetailsEOModel
+                            //{
+                            //    TopicDetailsId = cr.Id,
+                            //    ConceptOne = cr.ConceptOne.ConceptOneName,
+                            //    ConceptTwo = cr.ConceptTwo.ConceptTwoName,
+                            //    RelationType = cr.Relation.RelationName,
+                            //    TopicName = cr.Topic.TopicsName
+                            //});
+                        }
+                    }
+
+                    //var client = new GraphClient(new Uri("http://localhost:11002/db/data"), "neo4j", "mohammed123805")
+                    //{
+                    //    JsonContractResolver = new CamelCasePropertyNamesContractResolver()
+                    //};
+
+                    //client.Connect();
+                    //List<string> con1list = topicDetailsEOList.Select(X => X.ConceptOne).Distinct().ToList();
+                    //string concept1 = string.Join(",", con1list);
+                    //List<string> con2list = topicDetailsEOList.Select(X => X.ConceptTwo).Distinct().ToList();
+                    //string concept2 = string.Join(",", con2list);
+                    //List<string> rellist = topicDetailsEOList.Select(X => X.RelationType).Distinct().ToList();
+                    //string relation = string.Join(",", rellist);
+                    //string rel = "(conceptone1)-[:" + relation + "]->(conceptone2)";
+
+                    //client.Cypher
+                    //    .Match("(conceptone1:ConceptOne)", "(conceptone2:ConceptOne)")
+                    //    .Where((ConceptOne1 conceptone1) => conceptone1.Name == concept1)
+                    //    .AndWhere((ConceptOne1 conceptone2) => conceptone2.Name == concept2)
+                    //    .Create(rel)
+                    //    .ExecuteWithoutResultsAsync()
+                    //    .Wait();
+
                     return true;
-
-
                 }
                 else
                     return false;
@@ -424,12 +856,12 @@ namespace WordsRelation
 
             int count = 0;
             List<SaveAllCR> saveAllCRList = new List<SaveAllCR>();
-            SaveAllCR saveAllCR = new SaveAllCR();
+            //SaveAllCR saveAllCR = new SaveAllCR();
 
-            Relation relation = new Relation();
-            ConceptOne c1Details = new ConceptOne();
-            ConceptTwo c2Details = new ConceptTwo();
-            Topic topicDBEntity = new Topic();
+            //Relation relation = new Relation();
+            //ConceptOne c1Details = new ConceptOne();
+            //ConceptTwo c2Details = new ConceptTwo();
+            //Topic topicDBEntity = new Topic();
 
             List<TopicDetailsEOModel> topicDetailsEOList = new List<TopicDetailsEOModel>();
 
@@ -442,14 +874,26 @@ namespace WordsRelation
 
                     foreach(SaveAllCR cr in saveAllCRList)
                     {
-                        topicDetailsEOList.Add(new TopicDetailsEOModel
-                        {
-                            TopicDetailsId = cr.Id,
-                            ConceptOne = cr.ConceptOne.ConceptOneName,
-                            ConceptTwo = cr.ConceptTwo.ConceptTwoName,
-                            RelationType = cr.Relation.RelationName,
-                            TopicName = cr.Topic.TopicsName
-                        });
+
+
+                        TopicDetailsEOModel tdEoModel = new TopicDetailsEOModel();
+                        tdEoModel.TopicDetailsId = cr.Id;
+                        tdEoModel.ConceptOne = cr.ConceptOne.ConceptOneName;
+                        tdEoModel.ConceptTwo = cr.ConceptOne1.ConceptOneName;
+                        tdEoModel.RelationType = cr.Relation.RelationName;
+                        tdEoModel.TopicName = cr.Topic.TopicsName;
+
+                        topicDetailsEOList.Add(tdEoModel);
+
+                        //topicDetailsEOList.Add(new TopicDetailsEOModel
+                        //{
+                        //    TopicDetailsId = cr.Id,
+                        //    ConceptOne = cr.ConceptOne.ConceptOneName,
+                        //    //ConceptTwo = cr.ConceptTwo.ConceptTwoName,
+                        //    ConceptTwo = cr.ConceptOne.ConceptOneName,
+                        //    RelationType = cr.Relation.RelationName,
+                        //    TopicName = cr.Topic.TopicsName
+                        //});
                     }
                 }
 

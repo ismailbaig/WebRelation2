@@ -52,24 +52,65 @@ function searchDetailsForTopic(topicName, c1, c2, rt) {
         context: document.body,
         type: 'POST',
         success: function (response) {
-            var topic_data = '';
+            if (response.d.length === 0) {
+                alert('No data found!');
+            }
+            else {
+                var topic_data = '';
+                $.each(response.d, function (key, val) {
+                    topic_data += '<tr>';
+                    topic_data += '<td style="visibility: hidden">' + val.TopicDetailsId + '</td>';
+                    topic_data += "<td  id='td_c1_" + val.TopicDetailsId + "'>" + val.ConceptOne + "</td>";
+                    topic_data += "<td  id='td_c2_" + val.TopicDetailsId + "'>" + val.ConceptTwo + '</td>';
+                    topic_data += "<td  id='td_rt_" + val.TopicDetailsId + "'>" + val.RelationType + '</td>';
+                    //topic_data += '<td>' + val.TopicName + '</td>';
+                    topic_data += "<td><input  type='button' value='Edit Topic Details' id='EdittopicDettsId" + val.TopicDetailsId +
+                        "'class='btn btn - primary' onclick = editTopic(this)></td>";
+                    topic_data += "<td><input  type='button' value='Delete' id='deletetopicDetsId" + val.TopicDetailsId +
+                        "'class='btn btn - primary' onclick = Delete(event)></td>";
+                    topic_data += '</tr>';
+                });
+                $("#topicDetailsTable tr").remove();
+                //$('#topicDetailsTable').Clear();
+                $('#topicDetailsTable').append('<tr><th style="visibility: hidden">topicId</th><th>Concept One</th><th>Concept Two</th><th>Relation Type</th><th>Edit</th><th>Delete</th></tr>');
+                $('#topicDetailsTable').append(topic_data);
+            }
+        }
+    });
+
+}
+
+function getNeo4jQuery(topicName, c1, c2, rt) {
+
+    //Retrieve Relations OnLoad Page
+    var request = {
+        topic: topicName, c1: (!c1 ? '0' : c1), c2: (!c2 ? '0' : c2), rt: (!rt ? '0' : rt)
+    };
+
+    var inputData = JSON.stringify(request);
+    $.ajax({
+        //url: 'NewTopics.aspx/GetNeo4JQuery',
+        url: 'Neo4j.aspx/GetNeo4JQuery',
+        data: inputData,
+        dataType: "json",
+        contentType: "application/json",
+        cache: false,
+        context: document.body,
+        type: 'POST',
+        success: function (response) {
+            var topic_data2 = '';
             $.each(response.d, function (key, val) {
-                topic_data += '<tr>';
-                topic_data += '<td style="visibility: hidden">' + val.TopicDetailsId + '</td>';
-                topic_data += "<td  id='td_c1_" + val.TopicDetailsId + "'>" + val.ConceptOne + "</td>";
-                topic_data += "<td  id='td_c2_" + val.TopicDetailsId + "'>" + val.ConceptTwo + '</td>';
-                topic_data += "<td  id='td_rt_" + val.TopicDetailsId + "'>" + val.RelationType + '</td>';
-                //topic_data += '<td>' + val.TopicName + '</td>';
-                topic_data += "<td><input  type='button' value='Edit Topic Details' id='EdittopicDettsId" + val.TopicDetailsId +
-                    "'class='btn btn - primary' onclick = editTopic(this)></td>";
-                topic_data += "<td><input  type='button' value='Delete' id='deletetopicDetsId" + val.TopicDetailsId +
-                    "'class='btn btn - primary' onclick = Delete(event)></td>";
-                topic_data += '</tr>';
+                topic_data2 += val.Text;
             });
-            $("#topicDetailsTable tr").remove();
-            //$('#topicDetailsTable').Clear();
-            $('#topicDetailsTable').append('<tr><th style="visibility: hidden">topicId</th><th>Concept One</th><th>Concept Two</th><th>Relation Type</th><th>Edit</th><th>Delete</th></tr>');
-            $('#topicDetailsTable').append(topic_data);
+           //$('#PlaceHolder2').append(topic_data2);
+            $('#PlaceHolder2').append(topic_data2);
+
+            //var url = 'Neo4j.aspx';
+            //url += "?param1=" + topic_data2;
+            ////url += "&param2=" + escape(DD2Value);
+            ////url += "&param3=" + escape(xyz);
+            //window.location = url;
+            
         }
     });
 

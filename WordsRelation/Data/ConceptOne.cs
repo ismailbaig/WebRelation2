@@ -18,6 +18,7 @@ namespace WordsRelation.Data
         public ConceptOne()
         {
             this.SaveAllCRs = new HashSet<SaveAllCR>();
+            this.SaveAllCRs1 = new HashSet<SaveAllCR>();
         }
     
         public int C1Id { get; set; }
@@ -25,5 +26,7 @@ namespace WordsRelation.Data
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<SaveAllCR> SaveAllCRs { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<SaveAllCR> SaveAllCRs1 { get; set; }
     }
 }

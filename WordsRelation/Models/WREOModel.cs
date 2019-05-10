@@ -50,4 +50,24 @@ namespace WordsRelation.Models
         public string concept1 { get; set; }
         public string concept2 { get; set; }
     }
+
+    public class ConceptOne1
+    {
+        public string Name { get; set; }
+        public string description { get; set; }
+        
+
+    }
+
+    public class ConceptTwo2
+    {
+        public string Name { get; set; }
+        public string description { get; set; }
+    }
+
+
+
+
+
+
 }

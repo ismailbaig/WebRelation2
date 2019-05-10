@@ -48,7 +48,7 @@
 					<span class="icon-bar"></span>
 					<span class="icon-bar"></span>
 					<span class="icon-bar"></span></button>
-				<a class="navbar-brand" href="#"><span>Concepts</span>Relation</a>
+				<a class="navbar-brand" href="#"><span>Conceptual </span>Representation</a>
 			</div>
 		</div>
 	</nav>
@@ -63,9 +63,10 @@
 
 		<ul class="nav menu">
 			<li class="active"><a href="NewTopics.aspx"><em class="fa fa-dashboard">&nbsp;</em> New Topic</a></li>
-			<li><a href="OldTopics.aspx"><em class="fa fa-calendar">&nbsp;</em> Old Topics</a></li>
-			<li><a href="ConceptSearch.aspx"><em class="fa fa-calendar">&nbsp;</em> Search</a></li>
-			<li><a href="ConceptSearch.aspx"><em class="fa fa-power-off">&nbsp;</em> Logout</a></li>
+			<li><a href="AllOldTopics.aspx"><em class="fa fa-calendar">&nbsp;</em> All Topics</a></li>
+            <li><a href="Search.aspx"><em class="fa fa-calendar">&nbsp;</em> Search</a></li>
+			<%--<li><a href="ConceptSearch.aspx"><em class="fa fa-calendar">&nbsp;</em> Search</a></li>--%>
+			<li><a href="login.html"><em class="fa fa-power-off">&nbsp;</em> Logout</a></li>
 		</ul>
 	</div>
     <div class="col-sm-9 col-sm-offset-3 col-lg-10 col-lg-offset-2 main">
@@ -74,13 +75,13 @@
 				<li><a href="#">
 					<em class="fa fa-home"></em>
 				</a></li>
-				<li class="active">New Topic</li>
+				<li class="active">Topic</li>
 			</ol>
 		</div>
 		
 		<div class="row">
 			<div class="col-lg-12">
-				<h1 class="page-header">Make New Relation</h1>
+				<h1 class="page-header">Topic</h1>
 			</div>
 		</div>
 				
@@ -97,10 +98,11 @@
 							<form role="form">
 								
 			<div class="form-group">
-									<label>New Topic Name</label>
+									<label>Topic Name</label>
 								
                                 <%--<asp:TextBox ID="TextBox1" class="form-control" runat="server"></asp:TextBox>--%>
-                                <input type="text" id="topic" class="form-control" /><br />
+                               <%-- <asp:TextBox ID="topic" runat="server" class="form-control"></asp:TextBox>--%>
+                                <input runat="server"  type="text" id="topic" class="form-control" /><br />
                                 <input  type='button' value='Save Topic' id='savetopic' class="btn btn-primary">
                                 <input  type='button' value='Get Topic Details' id='getTopicDetails' class="btn btn-primary">
 								</div>
@@ -146,11 +148,11 @@
                 <input type="text" class="form-control" id="newC1Val">
               </div>
               <div class="form-group">
-                <label for="newC1Type" class="col-form-label">Enter New Type:</label>
+                <label for="newC1Type" class="col-form-label">Property Type:</label>
                 <input type="text" class="form-control" id="newC1Type">
               </div>
               <div class="form-group">
-                <label for="newC1Property" class="col-form-label">Enter New Property:</label>
+                <label for="newC1Property" class="col-form-label">Property Description:</label>
                 <input type="text" class="form-control" id="newC1Property">
               </div>
             </form>
@@ -180,11 +182,11 @@
                 <input type="text" class="form-control" id="newC2Val">
               </div>
               <div class="form-group">
-                <label for="newC2Type" class="col-form-label">Enter New Type:</label>
+                <label for="newC2Type" class="col-form-label">Property type:</label>
                 <input type="text" class="form-control" id="newC2Type">
               </div>
               <div class="form-group">
-                <label for="newC2Property" class="col-form-label">Enter New Property:</label>
+                <label for="newC2Property" class="col-form-label">Property Description:</label>
                 <input type="text" class="form-control" id="newC2Property">
               </div>
             </form>
@@ -202,7 +204,7 @@
       <div class="modal-dialog" role="document">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title" id="newRelationTypeLabel">Add New Relation Type</h5>
+            <h5 class="modal-title" id="newRelationTypeLabel">Add New Relationship Type</h5>
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
               <span aria-hidden="true">&times;</span>
             </button>
@@ -214,11 +216,11 @@
                 <input type="text" class="form-control" id="newRTVal">
               </div>
               <div class="form-group">
-                <label for="newRTType" class="col-form-label">Enter New Type:</label>
+                <label for="newRTType" class="col-form-label">Property Type:</label>
                 <input type="text" class="form-control" id="newRTType">
               </div>
               <div class="form-group">
-                <label for="newRTProperty" class="col-form-label">Enter New Property:</label>
+                <label for="newRTProperty" class="col-form-label">Property Description:</label>
                 <input type="text" class="form-control" id="newRTProperty">
               </div>
             </form>
@@ -277,9 +279,15 @@
             <input  type='button' value='Reset' id='btn-reset' 
                 class="btn btn-primary">
         </div></div></div></div></div>
+
+         <input  type='button' value='Neo4jQuery' id='Neo4jQueryId' class="btn btn-primary">
+        <textarea placeholder="" id="PlaceHolder2"></textarea>
+        <%-- <asp:PlaceHolder ID="PlaceHolder2" runat="server"></asp:PlaceHolder>--%>
     <table id="topicDetailsTable"></table>
+
     </div></div>
     </form>
+
 </body>
 </html>
 <!-- Script -->
@@ -320,7 +328,7 @@
             
         });
 
-        //Reset Select 
+        //Reset Select  
         $('#btn-reset').click(function () {
             resetTopicDetails();
         });
@@ -329,6 +337,47 @@
         $('#updateTopicDetails').click(function () {
             updateCR();
         });
+
+
+        //Neo4J
+        $('#Neo4jQueryId').click(function () {
+
+            topicName = $('#topic').val();
+            c1 = $('#selConceptOne').val();
+            c2 = $('#selConceptTwo').val();
+            rt = $('#selRelation').val();
+            if (topicName !== null && topicName !== '') {
+               getNeo4jQuery(topicName, c1, c2, rt);
+            } else {
+                alert('Topic field cannot be empty!!');
+            }
+            
+        });
+
+        querySt();
+
+        
+        function querySt() {
+            var url = window.location.href;
+            KeysValues = url.split(/[\?&]+/);
+            if (KeysValues.length > 1 && !!KeysValues[1]) {
+                var topicNameFromUrl = KeysValues[1].split("=")[1];
+                if (topicNameFromUrl) {
+                    console.log(' topic name : ' + topicNameFromUrl);
+                    $("#topic").val(topicNameFromUrl);
+                } else {
+                    console.log('no topic name');
+                }
+            }
+            // console.log(KeysValues);
+            //for (i = 0; i < KeysValues.length; i++) {
+            //    KeyValue = KeysValues[i].split("=");
+            //    console.log(keyValue);
+            //    //if (KeyValue[0] == 'dfd') {
+            //    //    console.log(KeyValue[1]);
+            //    //}
+            //}
+        }
 
 
         //$('#EdittopicDettsId').click(function () {
