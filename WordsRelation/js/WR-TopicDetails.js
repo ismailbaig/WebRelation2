@@ -24,7 +24,7 @@ function getAllDetailsForTopic(topicName) {
                 topic_data += "<td><input  type='button' value='Edit Topic Details' id='EdittopicDettsId" + val.TopicDetailsId +  
                     "'class='btn btn - primary' onclick = editTopic(event)></td>";
                 topic_data += "<td><input  type='button' value='Delete' id='deletetopicDetsId" + val.TopicDetailsId +
-                    "'class='btn btn - primary' onclick = Delete(event)></td>";
+                    "'class='btn btn-primary' onclick = DeleteConfirmation(event)  data-toggle='modal' data-target='#deleteConfirmation_modal_id'></td>";
                 topic_data += '</tr>';
             });
             $("#topicDetailsTable tr").remove();
@@ -67,7 +67,7 @@ function searchDetailsForTopic(topicName, c1, c2, rt) {
                     topic_data += "<td><input  type='button' value='Edit Topic Details' id='EdittopicDettsId" + val.TopicDetailsId +
                         "'class='btn btn - primary' onclick = editTopic(this)></td>";
                     topic_data += "<td><input  type='button' value='Delete' id='deletetopicDetsId" + val.TopicDetailsId +
-                        "'class='btn btn - primary' onclick = Delete(event)></td>";
+                        "'class='btn btn-primary' onclick = DeleteConfirmation(event)  data-toggle='modal' data-target='#deleteConfirmation_modal_id'></td>";
                     topic_data += '</tr>';
                 });
                 $("#topicDetailsTable tr").remove();
@@ -188,12 +188,23 @@ function setRTOnEdit($rtVal) {
     });
 }
 
-function Delete(val) {
-    console.log(val.target.id.replace('deletetopicDetsId', ''));
+function DeleteConfirmation(val) {
+    var _topicId = val.target.id.replace('deletetopicDetsId', '');
+    $(".modal-body #deleteConfirm_topicId").val(_topicId);
+}
+
+function DeleteCancel() {
+    console.log($(".modal-body #deleteConfirm_topicId").val());
+    $(".modal-body #deleteConfirm_topicId").val('');
+    $('#deleteConfirmation_modal_id').modal('hide');
+    console.log($(".modal-body #deleteConfirm_topicId").val());
+}
+
+function Delete() {
 
     //Retrieve Relations OnLoad Page
     var request = {
-        topicId: val.target.id.replace('deletetopicDetsId', '')
+        topicId: $(".modal-body #deleteConfirm_topicId").val()
     };
 
     var inputData = JSON.stringify(request);
@@ -224,6 +235,10 @@ function Delete(val) {
         },
         error: function (err) {
             alert('Error occured, Unable to deleted!!');
+        },
+        complete: function () {
+            $(".modal-body #deleteConfirm_topicId").val('');
+            $('#deleteConfirmation_modal_id').modal('hide');
         }
     });
 }

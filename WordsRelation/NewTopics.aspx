@@ -233,6 +233,57 @@
       </div>
     </div>
 
+    <!-- Delete Confirmation Modal -->
+    <div class="modal fade" id="deleteConfirmation_modal_id" tabindex="-1" role="dialog" aria-labelledby="deleteConfirmation_modal_label" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Delete Confirmation!</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <form>
+              <div class="form-group">
+                <label class="col-form-label">Are you sure you want to Delete ?</label>
+              </div>
+              <div id="deleteConfirm_topicId" hidden="hidden"></div>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal" onclick="DeleteCancel()">No</button>
+            <button type="button" class="btn btn-primary" onclick="Delete()">Yes</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Delete Confirmation modal -->
+    <div class="modal fade" id="deleteConfirmationId" tabindex="-1" role="dialog" aria-labelledby="deleteConfirmationLabel" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="deleteConfirmationLabel">Delete Confirmation</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <form>
+              <div class="form-group">
+                <label class="col-form-label">Are you sure you want to delete?</label>
+              </div>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal" onclick = 'Delete(event)'>Yes</button>
+            <button type="button" class="btn btn-primary" onclick = 'DeleteCancel()'>No</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
     </form></div>
         <div class="col-md-4">
 		 <div class="form-group">
