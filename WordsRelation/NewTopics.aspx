@@ -16,13 +16,13 @@
    
 	
 
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+<%--    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>--%>
 
-     <%--<link href="css/bootstrap.min.css" rel="stylesheet">--%>
-    <%--<script src='select2/dist/js/jquery-3.2.1.min.js' type='text/javascript'></script>--%>
-    <%--<script src='js/bootstrap.min.js' type='text/javascript'></script>--%>
+     <link href="css/bootstrap.min.css" rel="stylesheet">
+    <script src='select2/dist/js/jquery-3.2.1.min.js' type='text/javascript'></script>
+    <script src='js/bootstrap.min.js' type='text/javascript'></script>
     <script src='select2/dist/js/select2.full.js' type='text/javascript'></script>
 
     <link href="css/font-awesome.min.css" rel="stylesheet">

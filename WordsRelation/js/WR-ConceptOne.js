@@ -60,6 +60,14 @@ addNewC1 = function () {
                 $("#selConceptTwo").select2({ data: response.d });
                 $(".modal-body input").val("");
                 $('#newConceptOneId').modal('hide');
+            },
+            error: function (err) {
+                $(".modal-body input").val("");
+                $('#newConceptOneId').modal('hide');
+            },
+            complete: function () {
+                $(".modal-body input").val("");
+                $('#newConceptOneId').modal('hide');
             }
         });
     } else {

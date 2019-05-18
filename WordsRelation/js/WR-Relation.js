@@ -76,6 +76,14 @@ addNewRT = function () {
                 $("#selRelation").select2({ data: response.d });
                 $(".modal-body input").val("");
                 $('#newRelationTypeId').modal('hide');
+            },
+            error: function (err) {
+                $(".modal-body input").val("");
+                $('#newRelationTypeId').modal('hide');
+            },
+            complete: function () {
+                $(".modal-body input").val("");
+                $('#newRelationTypeId').modal('hide');
             }
         });
     } else {

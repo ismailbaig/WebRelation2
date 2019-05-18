@@ -54,6 +54,14 @@ addNewC2 = function () {
                 $("#selConceptTwo").select2({ data: response.d });
                 $(".modal-body input").val("");
                 $('#newConceptTwoId').modal('hide');
+            },
+            error: function (err) {
+                $(".modal-body input").val("");
+                $('#newConceptTwoId').modal('hide');
+            },
+            complete: function () {
+                $(".modal-body input").val("");
+                $('#newConceptTwoId').modal('hide');
             }
         });
     } else {
