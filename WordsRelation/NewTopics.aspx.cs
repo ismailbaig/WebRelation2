@@ -342,17 +342,23 @@ namespace WordsRelation
             try
             {
 
-    
 
+                // Commenting below line from 348 - 373, to check if Predicate logic, which is below 373 line works or not.
 
                 using (var context = new ConceptsRelationDBEntities())
-                    {
-                        saveAllCRList = context.SaveAllCRs.Where(tp => tp.Topic.TopicsName == topic).ToList<SaveAllCR>();
+                {
+                    saveAllCRList = context.SaveAllCRs.Where(tp => tp.Topic.TopicsName == topic).ToList<SaveAllCR>();
 
 
                     foreach (var item in saveAllCRList)
                     {
-                        if (item.fC1Id == c1 || item.fC1Id == c2 || item.fRId == rt)
+                        //
+                        // The below logic is wrong, it has to be AND but if and only if the 
+                        // values are not 0, if any either c1, c2, rt is 0, then neglect that in the filter, for which item.fkId == 0 with OR condition
+                        //if (item.fC1Id == c1 || item.fC1Id == c2 || item.fRId == rt)
+                        if((item.fC1Id == c1 || c1 == 0) && 
+                            (item.fC2Id == c2 || c2 == 0) && 
+                            (item.fRId == rt || rt == 0))
                         {
                             saveAllCRList1.Add(item);
                         }
@@ -360,81 +366,81 @@ namespace WordsRelation
 
 
                     foreach (SaveAllCR cr in saveAllCRList1)
+                    {
+                        topicDetailsEOList.Add(new TopicDetailsEOModel
                         {
-                            topicDetailsEOList.Add(new TopicDetailsEOModel
-                            {
-                                TopicDetailsId = cr.Id,
-                                ConceptOne = cr.ConceptOne.ConceptOneName,
-                                ConceptTwo = cr.ConceptOne1.ConceptOneName,
-                                RelationType = cr.Relation.RelationName,
-                                TopicName = cr.Topic.TopicsName
-                            });
-                        }
+                            TopicDetailsId = cr.Id,
+                            ConceptOne = cr.ConceptOne.ConceptOneName,
+                            ConceptTwo = cr.ConceptOne1.ConceptOneName,
+                            RelationType = cr.Relation.RelationName,
+                            TopicName = cr.Topic.TopicsName
+                        });
                     }
-
-              
-             
-
-
-
-                    //    var searchCriteria = new
-                    //    {
-                    //        topicName = topic,
-                    //        concept1 = c1,
-                    //        concept2 = c2,
-                    //        relationType = rt
-                    //    };
-
-                    //    var predicate = PredicateBuilder.New<SaveAllCR>();
-
-                    //    if (!string.IsNullOrWhiteSpace(searchCriteria.topicName.ToString()))
-                    //    {
-                    //        predicate = predicate.And(p => p.Topic.TopicsName.Contains(searchCriteria.topicName));
-                    //    }
-
-                    //    //if (!string.IsNullOrWhiteSpace(searchCriteria.concept1.ToString()))
-                    //    if (searchCriteria.concept1.ToString() != "0")
-                    //    {
-                    //        //predicate = predicate.And(p => p.ConceptOne.ConceptOneName.Contains(searchCriteria.concept1.ToString()));
-                    //        //predicate = predicate.And(p => p.ConceptOne.C1Id.ToString().Contains(searchCriteria.concept1.ToString()));
-                    //        predicate = predicate.And(p => p.ConceptOne.C1Id.ToString().Contains(searchCriteria.concept1.ToString()));
-                    //    }
-                    //    //if (!string.IsNullOrWhiteSpace(searchCriteria.concept2.ToString()))
-                    //    if (searchCriteria.concept2.ToString() != "0")
-                    //    {
-                    //        predicate = predicate.And(p => p.ConceptTwo.C2Id.ToString().Contains(searchCriteria.concept2.ToString()));
-                    //    }
-                    //    //if (!string.IsNullOrWhiteSpace(searchCriteria.relationType.ToString()))
-                    //    if(searchCriteria.relationType.ToString() != "0")
-                    //    {
-                    //        predicate = predicate.And(p => p.Relation.RelID.ToString().Contains(searchCriteria.relationType.ToString()));
-                    //    }
-                    //    using (var context = new ConceptsRelationDBEntities())
-                    //    {
-                    //        saveAllCRList = context.SaveAllCRs.
-                    //            Where( predicate.Compile())
-                    //            //Where(tp => tp.Topic.TopicsName == topic)
-                    //            .ToList<SaveAllCR>();
-
-                    //        foreach (SaveAllCR cr in saveAllCRList)
-                    //        {
-
-                    //            topicDetailsEOList.Add(new TopicDetailsEOModel
-                    //            {
-                    //                TopicDetailsId = cr.Id,
-                    //                ConceptOne = cr.ConceptOne.ConceptOneName,
-                    //                ConceptTwo = cr.ConceptTwo.ConceptTwoName,
-                    //                RelationType = cr.Relation.RelationName,
-                    //                TopicName = cr.Topic.TopicsName
-                    //            });
-                    //        }
-                    //    }
+                }
 
 
 
 
 
-                    return topicDetailsEOList;
+                //// 21 May 2019:  Predicate was not working thats why commented.
+                //var searchCriteria = new
+                //{
+                //    topicName = topic,
+                //    concept1 = c1,
+                //    concept2 = c2,
+                //    relationType = rt
+                //};
+
+                //var predicate = PredicateBuilder.New<SaveAllCR>();
+
+                //if (!string.IsNullOrWhiteSpace(searchCriteria.topicName.ToString()))
+                //{
+                //    predicate = predicate.And(p => p.Topic.TopicsName.Contains(searchCriteria.topicName));
+                //}
+
+                ////if (!string.IsNullOrWhiteSpace(searchCriteria.concept1.ToString()))
+                //if (searchCriteria.concept1.ToString() != "0")
+                //{
+                //    //predicate = predicate.And(p => p.ConceptOne.ConceptOneName.Contains(searchCriteria.concept1.ToString()));
+                //    //predicate = predicate.And(p => p.ConceptOne.C1Id.ToString().Contains(searchCriteria.concept1.ToString()));
+                //    predicate = predicate.And(p => p.ConceptOne.C1Id.ToString().Contains(searchCriteria.concept1.ToString()));
+                //}
+                ////if (!string.IsNullOrWhiteSpace(searchCriteria.concept2.ToString()))
+                //if (searchCriteria.concept2.ToString() != "0")
+                //{
+                //    predicate = predicate.And(p => p.ConceptTwo.C2Id.ToString().Contains(searchCriteria.concept2.ToString()));
+                //}
+                ////if (!string.IsNullOrWhiteSpace(searchCriteria.relationType.ToString()))
+                //if (searchCriteria.relationType.ToString() != "0")
+                //{
+                //    predicate = predicate.And(p => p.Relation.RelID.ToString().Contains(searchCriteria.relationType.ToString()));
+                //}
+                //using (var context = new ConceptsRelationDBEntities())
+                //{
+                //    saveAllCRList = context.SaveAllCRs.
+                //        Where(predicate.Compile())
+                //        //Where(tp => tp.Topic.TopicsName == topic)
+                //        .ToList<SaveAllCR>();
+
+                //    foreach (SaveAllCR cr in saveAllCRList)
+                //    {
+
+                //        topicDetailsEOList.Add(new TopicDetailsEOModel
+                //        {
+                //            TopicDetailsId = cr.Id,
+                //            ConceptOne = cr.ConceptOne.ConceptOneName,
+                //            ConceptTwo = cr.ConceptTwo.ConceptTwoName,
+                //            RelationType = cr.Relation.RelationName,
+                //            TopicName = cr.Topic.TopicsName
+                //        });
+                //    }
+                //}
+
+
+
+
+
+                return topicDetailsEOList;
 
             }
             catch (Exception ex)
@@ -595,19 +601,19 @@ namespace WordsRelation
                 {
 
 
-                    //var client = new GraphClient(new Uri("http://localhost:11002/db/data"), "neo4j", "mohammed123805")
-                    //{
-                    //    JsonContractResolver = new CamelCasePropertyNamesContractResolver()
-                    //};
+                    var client = new GraphClient(new Uri("http://localhost:7474/db/data"), "neo4j", "ismail123")
+                    {
+                        JsonContractResolver = new CamelCasePropertyNamesContractResolver()
+                    };
 
-                    //client.Connect();
+                    client.Connect();
 
-                    //var conceptOne = new ConceptOne1 { Name = c1NewVal };
-                    //client.Cypher
-                    //    .Create("(conceptone:ConceptOne {conceptB})")
-                    //    .WithParam("conceptB", conceptOne)
-                    //    .ExecuteWithoutResultsAsync()
-                    //    .Wait();
+                    var conceptOne = new ConceptOne1 { Name = c1NewVal };
+                    client.Cypher
+                        .Create("(conceptone:ConceptOne {conceptB})")
+                        .WithParam("conceptB", conceptOne)
+                        .ExecuteWithoutResultsAsync()
+                        .Wait();
 
 
 
@@ -816,27 +822,27 @@ namespace WordsRelation
                         }
                     }
 
-                    //var client = new GraphClient(new Uri("http://localhost:11002/db/data"), "neo4j", "mohammed123805")
-                    //{
-                    //    JsonContractResolver = new CamelCasePropertyNamesContractResolver()
-                    //};
+                    var client = new GraphClient(new Uri("http://localhost:7474/db/data"), "neo4j", "ismail123")
+                    {
+                        JsonContractResolver = new CamelCasePropertyNamesContractResolver()
+                    };
 
-                    //client.Connect();
-                    //List<string> con1list = topicDetailsEOList.Select(X => X.ConceptOne).Distinct().ToList();
-                    //string concept1 = string.Join(",", con1list);
-                    //List<string> con2list = topicDetailsEOList.Select(X => X.ConceptTwo).Distinct().ToList();
-                    //string concept2 = string.Join(",", con2list);
-                    //List<string> rellist = topicDetailsEOList.Select(X => X.RelationType).Distinct().ToList();
-                    //string relation = string.Join(",", rellist);
-                    //string rel = "(conceptone1)-[:" + relation + "]->(conceptone2)";
+                    client.Connect();
+                    List<string> con1list = topicDetailsEOList.Select(X => X.ConceptOne).Distinct().ToList();
+                    string concept1 = string.Join(",", con1list);
+                    List<string> con2list = topicDetailsEOList.Select(X => X.ConceptTwo).Distinct().ToList();
+                    string concept2 = string.Join(",", con2list);
+                    List<string> rellist = topicDetailsEOList.Select(X => X.RelationType).Distinct().ToList();
+                    string relation = string.Join(",", rellist);
+                    string rel = "(conceptone1)-[:" + relation + "]->(conceptone2)";
 
-                    //client.Cypher
-                    //    .Match("(conceptone1:ConceptOne)", "(conceptone2:ConceptOne)")
-                    //    .Where((ConceptOne1 conceptone1) => conceptone1.Name == concept1)
-                    //    .AndWhere((ConceptOne1 conceptone2) => conceptone2.Name == concept2)
-                    //    .Create(rel)
-                    //    .ExecuteWithoutResultsAsync()
-                    //    .Wait();
+                    client.Cypher
+                        .Match("(conceptone1:ConceptOne)", "(conceptone2:ConceptOne)")
+                        .Where((ConceptOne1 conceptone1) => conceptone1.Name == concept1)
+                        .AndWhere((ConceptOne1 conceptone2) => conceptone2.Name == concept2)
+                        .Create(rel)
+                        .ExecuteWithoutResultsAsync()
+                        .Wait();
 
                     return true;
                 }
