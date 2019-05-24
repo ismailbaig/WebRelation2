@@ -92,16 +92,7 @@
 				
 					<div class="panel-body">
 						<div class="col-md-8">
-
-
-
-
-
-
-
-
-
-                            							<div class="col-md-8">
+ 							<div class="col-md-8">
 							<div class="form-group">
                                  <input runat="server"  type="text" id="topic" class="form-control" /><br />
 									<label>Concept 1</label>
@@ -143,39 +134,11 @@
             <input  type='button' value='Reset' id='btn-reset' 
                 class="btn btn-primary">
           <input  type='button' value='Neo4jQuery' id='Neo4jQueryId' class="btn btn-primary">
-        </div>
-
-
-
-
-                               
+        </div>      
         <textarea placeholder="" id="PlaceHolder2" rows="4" cols="100"></textarea>
         <%-- <asp:PlaceHolder ID="PlaceHolder2" runat="server"></asp:PlaceHolder>--%>
     <table id="topicDetailsTable"></table>
-
-
-
-
-
-                                        <!-- end project list -->
-                                	
-								</div>
-							
-						
-						</div>
-					</div>
-				</div>
-
-            <!-- /.panel-->
-			</div><!-- /.col-->
-		
-		</div><!-- /.row -->
-
-
-
-
-        </div>
-    </form>
+</div></div></div></div></div></div></div></form>
 </body>
 </html>
 
@@ -183,25 +146,6 @@
     $(document).ready(function(){
         //All on document ready fn's are in its corresponding js files
         //with self executing functions.
-
-        //$('#saveAll').click(function () {
-        //    saveAllWR(false, '0');
-        //});
-
-        //$('#savetopic').click(function () {
-        //    saveTopic();
-        //});
-
-        //$('#getTopicDetails').click(function () {
-        //    topicName = $('#topic').val();
-            
-        //    if (topicName !== null && topicName !== '') {
-        //        getAllDetailsForTopic(topicName);
-        //    } else {
-        //        alert('Topic field cannot be empty!!');
-        //    }
-            
-        //});
 
         $('#searchTopicDetails').click(function () {
             topicName = $('#topic').val();
@@ -241,39 +185,5 @@
             }
             
         });
-
-        querySt();
-
-        
-        function querySt() {
-            var url = window.location.href;
-            KeysValues = url.split(/[\?&]+/);
-            if (KeysValues.length > 1 && !!KeysValues[1]) {
-                var topicNameFromUrl = KeysValues[1].split("=")[1];
-                if (topicNameFromUrl) {
-                    console.log(' topic name : ' + topicNameFromUrl);
-                    $("#topic").val(topicNameFromUrl);
-                } else {
-                    console.log('no topic name');
-                }
-            }
-            // console.log(KeysValues);
-            //for (i = 0; i < KeysValues.length; i++) {
-            //    KeyValue = KeysValues[i].split("=");
-            //    console.log(keyValue);
-            //    //if (KeyValue[0] == 'dfd') {
-            //    //    console.log(KeyValue[1]);
-            //    //}
-            //}
-        }
-
-
-        //$('#EdittopicDettsId').click(function () {
-        //    alert('test');
-        //});
-
-        
-        
-        
     });
 </script>

@@ -29,7 +29,8 @@ function getAllDetailsForTopic(topicName) {
             });
             $("#topicDetailsTable tr").remove();
             //$('#topicDetailsTable').Clear();
-            $('#topicDetailsTable').append('<tr><th style="visibility: hidden">topicId</th><th>Concept One</th><th>Concept Two</th><th>Relation Type</th><th>Edit</th><th>Delete</th></tr>');
+            //$('#topicDetailsTable').append('<tr class="table"><th style="visibility: hidden">topicId</th><th>Concept One</th><th>Concept Two</th><th>Relation Type</th><th>Edit</th><th>Delete</th></tr>');
+            $('#topicDetailsTable').append('<tr class="table"><thead class="thead-dark"><th style="visibility: hidden">topicId</th><th>Concept One</th><th>Concept Two</th><th>Relation Type</th><th>Edit</th><th>Delete</th></thead></tr>');
             $('#topicDetailsTable').append(topic_data);
         }
     });
@@ -59,20 +60,21 @@ function searchDetailsForTopic(topicName, c1, c2, rt) {
                 var topic_data = '';
                 $.each(response.d, function (key, val) {
                     topic_data += '<tr>';
+                    //topic_data += '<thead class="thead-dark">';
                     topic_data += '<td style="visibility: hidden">' + val.TopicDetailsId + '</td>';
                     topic_data += "<td  id='td_c1_" + val.TopicDetailsId + "'>" + val.ConceptOne + "</td>";
                     topic_data += "<td  id='td_c2_" + val.TopicDetailsId + "'>" + val.ConceptTwo + '</td>';
                     topic_data += "<td  id='td_rt_" + val.TopicDetailsId + "'>" + val.RelationType + '</td>';
                     //topic_data += '<td>' + val.TopicName + '</td>';
                     topic_data += "<td><input  type='button' value='Edit Topic Details' id='EdittopicDettsId" + val.TopicDetailsId +
-                        "'class='btn btn - primary' onclick = editTopic(this)></td>";
+                        "'class='btn btn - primary' onclick = editTopic(event)></td>";
                     topic_data += "<td><input  type='button' value='Delete' id='deletetopicDetsId" + val.TopicDetailsId +
                         "'class='btn btn-primary' onclick = DeleteConfirmation(event)  data-toggle='modal' data-target='#deleteConfirmation_modal_id'></td>";
                     topic_data += '</tr>';
                 });
                 $("#topicDetailsTable tr").remove();
                 //$('#topicDetailsTable').Clear();
-                $('#topicDetailsTable').append('<tr><th style="visibility: hidden">topicId</th><th>Concept One</th><th>Concept Two</th><th>Relation Type</th><th>Edit</th><th>Delete</th></tr>');
+                $('#topicDetailsTable').append('<tr class="table"><thead class="thead-dark"><th style="visibility: hidden">topicId</th><th>Concept One</th><th>Concept Two</th><th>Relation Type</th><th>Edit</th><th>Delete</th></thead></tr>');
                 $('#topicDetailsTable').append(topic_data);
             }
         }
@@ -261,7 +263,19 @@ function updateCR() {
 }
 
 
-
+function querySt() {
+    var url = window.location.href;
+    KeysValues = url.split(/[\?&]+/);
+    if (KeysValues.length > 1 && !!KeysValues[1]) {
+        var topicNameFromUrl = KeysValues[1].split("=")[1];
+        if (topicNameFromUrl) {
+            console.log(' topic name : ' + topicNameFromUrl);
+            $("#topic").val(topicNameFromUrl.replace('%20', ' '));
+        } else {
+            console.log('no topic name');
+        }
+    }
+}
 
 
 

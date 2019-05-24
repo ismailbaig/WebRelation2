@@ -341,102 +341,70 @@
 
 </body>
 </html>
-<!-- Script -->
+
 <script>
-    $(document).ready(function(){
-        //All on document ready fn's are in its corresponding js files
-        //with self executing functions.
+$(document).ready(function(){
+    //All on document ready fn's are in its corresponding js files
+    //with self executing functions.
 
-        $('#saveAll').click(function () {
-            saveAllWR(false, '0');
-        });
-
-        $('#savetopic').click(function () {
-            saveTopic();
-        });
-
-        $('#getTopicDetails').click(function () {
-            topicName = $('#topic').val();
-            
-            if (topicName !== null && topicName !== '') {
-                getAllDetailsForTopic(topicName);
-            } else {
-                alert('Topic field cannot be empty!!');
-            }
-            
-        });
-
-        $('#searchTopicDetails').click(function () {
-            topicName = $('#topic').val();
-            c1 = $('#selConceptOne').val();
-            c2 = $('#selConceptTwo').val();
-            rt = $('#selRelation').val();
-            if (topicName !== null && topicName !== '') {
-                searchDetailsForTopic(topicName, c1, c2, rt);
-            } else {
-                alert('Topic field cannot be empty!!');
-            }
-            
-        });
-
-        //Reset Select  
-        $('#btn-reset').click(function () {
-            resetTopicDetails();
-        });
-
-        //update CR
-        $('#updateTopicDetails').click(function () {
-            updateCR();
-        });
-
-
-        //Neo4J
-        $('#Neo4jQueryId').click(function () {
-
-            topicName = $('#topic').val();
-            c1 = $('#selConceptOne').val();
-            c2 = $('#selConceptTwo').val();
-            rt = $('#selRelation').val();
-            if (topicName !== null && topicName !== '') {
-               getNeo4jQuery(topicName, c1, c2, rt);
-            } else {
-                alert('Topic field cannot be empty!!');
-            }
-            
-        });
-
-        querySt();
-
-        
-        function querySt() {
-            var url = window.location.href;
-            KeysValues = url.split(/[\?&]+/);
-            if (KeysValues.length > 1 && !!KeysValues[1]) {
-                var topicNameFromUrl = KeysValues[1].split("=")[1];
-                if (topicNameFromUrl) {
-                    console.log(' topic name : ' + topicNameFromUrl);
-                    $("#topic").val(topicNameFromUrl);
-                } else {
-                    console.log('no topic name');
-                }
-            }
-            // console.log(KeysValues);
-            //for (i = 0; i < KeysValues.length; i++) {
-            //    KeyValue = KeysValues[i].split("=");
-            //    console.log(keyValue);
-            //    //if (KeyValue[0] == 'dfd') {
-            //    //    console.log(KeyValue[1]);
-            //    //}
-            //}
-        }
-
-
-        //$('#EdittopicDettsId').click(function () {
-        //    alert('test');
-        //});
-
-        
-        
-        
+    $('#saveAll').click(function () {
+        saveAllWR(false, '0');
     });
+
+    $('#savetopic').click(function () {
+        saveTopic();
+    });
+
+    $('#getTopicDetails').click(function () {
+        topicName = $('#topic').val();
+            
+        if (topicName !== null && topicName !== '') {
+            getAllDetailsForTopic(topicName);
+        } else {
+            alert('Topic field cannot be empty!!');
+        }
+            
+    });
+
+    $('#searchTopicDetails').click(function () {
+        topicName = $('#topic').val();
+        c1 = $('#selConceptOne').val();
+        c2 = $('#selConceptTwo').val();
+        rt = $('#selRelation').val();
+        if (topicName !== null && topicName !== '') {
+            searchDetailsForTopic(topicName, c1, c2, rt);
+        } else {
+            alert('Topic field cannot be empty!!');
+        }
+            
+    });
+
+    //Reset Select  
+    $('#btn-reset').click(function () {
+        resetTopicDetails();
+    });
+
+    //update CR
+    $('#updateTopicDetails').click(function () {
+        updateCR();
+    });
+
+    //Neo4J
+    $('#Neo4jQueryId').click(function () {
+
+        topicName = $('#topic').val();
+        c1 = $('#selConceptOne').val();
+        c2 = $('#selConceptTwo').val();
+        rt = $('#selRelation').val();
+        if (topicName !== null && topicName !== '') {
+            getNeo4jQuery(topicName, c1, c2, rt);
+        } else {
+            alert('Topic field cannot be empty!!');
+        }
+            
+    });
+
+    querySt();
+
+});
 </script>
